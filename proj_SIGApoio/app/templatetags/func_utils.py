@@ -1,5 +1,5 @@
 from django import template
-from ..models import TipoRecurso, Recurso, Local, ReservaSemanal, ReservaMensal, ReservaDiaUnico, Usuario, Horario, TipoLocal, Chamado
+from ..models import TipoRecurso, Recurso, Local, ReservaSemanal, ReservaDiaUnico, Usuario, Horario, TipoLocal, Chamado
 from django.utils.safestring import mark_safe
 
 register = template.Library()

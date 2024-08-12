@@ -1,4 +1,4 @@
-from .views import efetuarChamado, home, getLocais, cadastroRecurso, cad_local, listar_local, success_page, cadastroTipoRecurso, listarRecursos, cadastroReservaSemanal, tipoReserva, cadastroReservaDia, cadastroReservaMensal, reserva_recurso, listarReservas, reservaDetails, filtrarReservas, filtrosReserva, getLocaisDia, listar_emprestimos
+from .views import efetuarChamado, home, getLocais, cadastroRecurso, cad_local, listar_local, success_page, cadastroTipoRecurso, listarRecursos, cadastroReservaSemanal, tipoReserva, cadastroReservaDia, reserva_recurso, listarReservas, reservaDetails, filtrarReservas, filtrosReserva, getLocaisDia, listar_emprestimos
 from django.urls import path
 
 urlpatterns = [
