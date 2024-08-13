@@ -11,12 +11,11 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 import json
 
-@require_GET
+# @require_GET
 def home(request):
     return render(request,'index.html')  
 
-#@require_http_methods(['GET','POST'])
-@require_POST
+# @require_POST
 def cad_local(request):
     if request.method == 'POST':
         form = LocalForm(request.POST)
@@ -28,7 +27,7 @@ def cad_local(request):
     return render(request, 'local/cad_local.html', {'form': form})
 
 
-@require_GET
+# @require_GET
 def success_page(request):
     return render(request, 'local/success_page.html')
 
@@ -71,7 +70,7 @@ def cadastro_tipo_recurso(request):
     context = {'form':form}
     return render(request, 'recurso/cadastro_tipo_recurso.html', context)
 
-@require_POST
+# @require_POST
 def reserva_recurso(request):
     tipos_recursos = TipoRecurso.objects.all()
     
@@ -79,13 +78,13 @@ def reserva_recurso(request):
         reserva_form = ReservaForm(request.POST)
         if reserva_form.is_valid():
             reserva_form.save()
-            return redirect('success_page')  # Ajuste o redirecionamento conforme necessário
+            return redirect('success_page') 
     else:
         reserva_form = ReservaForm()
 
     return render(request, 'recurso/reserva_recurso.html', {'reserva_form': reserva_form, 'tipos_recursos': tipos_recursos})
 
-@require_GET
+# @require_GET
 def listar_emprestimos(request):
     status = request.GET.get('status')
     usuario = request.GET.get('usuario')
@@ -114,7 +113,7 @@ def listar_emprestimos(request):
 
     return render(request, 'emprestimos/lista_emprestimos.html', context)
 
-@require_GET
+# @require_GET
 def listar_local(request):
     locais = Local.objects.all()
     tipo = request.GET.get('tipo')

@@ -71,7 +71,7 @@ class Local(models.Model):
     
 class ReservaSemanal(models.Model):    
     descricao = models.CharField(max_length=100, null=True)
-    horarios = models.ManyToManyField(Horario) # Verificar esse ManyToManyField
+    horarios = models.ManyToManyField(Horario) 
     local = models.ForeignKey(Local, on_delete=models.DO_NOTHING)
     matResponsavel = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING) 
     matSolicitante = models.ForeignKey(Usuario, related_name='%(class)s_usuario', on_delete=models.DO_NOTHING, default='')
