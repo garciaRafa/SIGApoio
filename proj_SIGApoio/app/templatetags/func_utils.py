@@ -55,14 +55,14 @@ def criar_filtro(valor):
             </select>
         """
     elif valor == "3":
-        resD = ReservaDiaUnico.objects.all()
-        resS = ReservaSemanal.objects.all()
+        res_d = ReservaDiaUnico.objects.all()
+        res_s = ReservaSemanal.objects.all()
 
         locais = []
-        for res in resD:
+        for res in res_d:
             if res.local not in locais:
                 locais.append(res.local)
-        for res in resS:
+        for res in res_s:
             if res.local not in locais:
                 locais.append(res.local)
 
@@ -76,14 +76,14 @@ def criar_filtro(valor):
         result += "</select>"
 
     elif valor == "4":
-        resD = ReservaDiaUnico.objects.all()
-        resS = ReservaSemanal.objects.all()
+        res_d = ReservaDiaUnico.objects.all()
+        res_s = ReservaSemanal.objects.all()
 
         resps = []
-        for res in resD:
+        for res in res_d:
             if res.matResponsavel not in resps:
                 resps.append(res.matResponsavel)
-        for res in resS:
+        for res in res_s:
             if res.matResponsavel not in resps:
                 resps.append(res.matResponsavel)
 
