@@ -10,7 +10,6 @@ from django.db.models import Q
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 import json
-from django.views.decorators.http import require_POST, require_GET, require_safe, require_http_methods
 
 @require_GET
 def home(request):
@@ -35,7 +34,7 @@ def success_page(request):
 
 # @require_http_methods(['GET','POST'])
 @require_POST
-def cadastroRecurso(request):
+def cadastro_recurso(request):
     if request.method != 'POST':
         form = RecursoForm()
     else:
@@ -55,7 +54,7 @@ def cadastroRecurso(request):
 
 #@require_http_methods(['GET','POST'])
 @require_POST
-def cadastroTipoRecurso(request):
+def cadastro_tipo_recurso(request):
     if request.method != 'POST':
         form = TipoRecursoForm()
     else:
@@ -143,22 +142,22 @@ def listar_local(request):
     return render(request, 'local/listar_local.html', context)
 
 @require_GET
-def listarRecursos(request):
+def listar_recursos(request):
     recursos = Recurso.objects.all()
-    recursosDisponiveis = Recurso.objects.filter(status=True)
-    recursosIndisponiveis = Recurso.objects.filter(status=False)
-    recursosFunciona = Recurso.objects.filter(funcionando=True)
-    recursosNaoFunciona = Recurso.objects.filter(funcionando=False)
+    recursos_disponiveis = Recurso.objects.filter(status=True)
+    recursos_indisponiveis = Recurso.objects.filter(status=False)
+    recursos_funciona = Recurso.objects.filter(funcionando=True)
+    recursos_nao_funciona = Recurso.objects.filter(funcionando=False)
     tipos = TipoRecurso.objects.all()
-    context = {'recursos':recursos, 'tipos':tipos, 'recursosDisponiveis':recursosDisponiveis, 'recursosIndisponiveis':recursosIndisponiveis, 'recursosNaoFunciona':recursosNaoFunciona, 'recursosFunciona':recursosFunciona}
+    context = {'recursos':recursos, 'tipos':tipos, 'recursosDisponiveis':recursos_disponiveis, 'recursosIndisponiveis':recursos_indisponiveis, 'recursosNaoFunciona':recursos_nao_funciona, 'recursosFunciona':recursos_funciona}
     return render(request, 'recurso/listar_recurso.html', context)
 
 @require_GET
-def tipoReserva(request):
+def tipo_reserva(request):
     return render(request, 'reserva/tipoReserva.html')
 
 @require_POST
-def cadastroReservaSemanal(request):
+def cadastro_reserva_semanal(request):
     if request.method != 'POST':
         form = ReservaForm()
         context = {'form': form}
@@ -175,16 +174,16 @@ def cadastroReservaSemanal(request):
             local = Local.objects.get(id=req['local'])
             horarios_vetor = converter_horarios(req.getlist('dias'), req.getlist('horarios')) # Junta os dias e horarios
             horarios = Horario.objects.filter(id__in=horarios_vetor)
-            novaReserva = ReservaSemanal.objects.create(descricao=descricao, local=local, matResponsavel=resp, matSolicitante=solic)
-            novaReserva.horarios.set(horarios)
-            novaReserva.save()
+            nova_reserva = ReservaSemanal.objects.create(descricao=descricao, local=local, matResponsavel=resp, matSolicitante=solic)
+            nova_reserva.horarios.set(horarios)
+            nova_reserva.save()
             return render(request, 'reserva/cadastroReserva.html', context)
         except:
             context = {'form': form, 'message': 'Erro no cadastro da reserva', 'error': True}
             return render(request, 'reserva/cadastroReserva.html', context)
     
 @require_POST
-def cadastroReservaDia(request):
+def cadastro_reserva_dia(request):
     if request.method != 'POST':
         form = ReservaDiaForm()
         context = {'form': form }
@@ -203,33 +202,33 @@ def cadastroReservaDia(request):
             data_fim = datetime.strptime(req['diaHoraFim'], '%Y-%m-%dT%H:%M')
             repeticao  = req['repeticao']
             if repeticao == 'unico':
-                novaReserva = ReservaDiaUnico.objects.create(descricao=descricao,
+                nova_reserva = ReservaDiaUnico.objects.create(descricao=descricao,
                                                          local=local, 
                                                          diaHoraInicio=data_inicio, 
                                                          diaHoraFim=data_fim,
                                                          matResponsavel=resp, 
                                                          matSolicitante=solic)
-                novaReserva.save()
+                nova_reserva.save()
             elif repeticao == 'semana':
                 while data_inicio.year == datetime.now().year:
-                    novaReserva = ReservaDiaUnico.objects.create(descricao=descricao,
+                    nova_reserva = ReservaDiaUnico.objects.create(descricao=descricao,
                                                          local=local, 
                                                          diaHoraInicio=data_inicio, 
                                                          diaHoraFim=data_fim,
                                                          matResponsavel=resp, 
                                                          matSolicitante=solic)
-                    novaReserva.save()
+                    nova_reserva.save()
                     data_inicio = data_inicio + timedelta(weeks=1)  # Pula uma semana
                     data_fim = data_fim + timedelta(weeks=1)
             elif repeticao == 'mes':
                 while data_inicio.year == datetime.now().year:
-                    novaReserva = ReservaDiaUnico.objects.create(descricao=descricao,
+                    nova_reserva = ReservaDiaUnico.objects.create(descricao=descricao,
                                                          local=local, 
                                                          diaHoraInicio=data_inicio, 
                                                          diaHoraFim=data_fim,
                                                          matResponsavel=resp, 
                                                          matSolicitante=solic)
-                    novaReserva.save()
+                    nova_reserva.save()
                     data_inicio = data_inicio + relativedelta(months=1)  # Pula um mês
                     data_fim = data_fim + relativedelta(months=1)
             
@@ -241,7 +240,7 @@ def cadastroReservaDia(request):
       
 @require_POST
 # @csrf_exempt
-def getLocais(request):
+def get_locais(request):
     data = json.loads(request.body)
     horarios = data['horarios']
     dias = data['dias']
@@ -263,7 +262,7 @@ def getLocais(request):
     return render(request, 'reserva/local_option.html', context)
 
 @require_POST
-def efetuarChamado(request):
+def efetuar_chamado(request):
     if request.method != 'POST':
         form = ChamadoForm()
     else:
@@ -277,7 +276,7 @@ def efetuarChamado(request):
     return render(request, 'reserva/efetuar_chamado.html', context)
 
 @require_GET
-def listarReservas(request):
+def listar_reservas(request):
     filtro_tipo='default'
 
     try:
@@ -290,24 +289,24 @@ def listarReservas(request):
     return render(request, "reserva/listar_reservas.html", context)
 
 @require_GET
-def filtrosReserva(request):
+def filtros_reserva(request):
     filtro = request.GET.get('filtro')
     context = {'filtro': filtro}
 
     return render(request, "reserva/filtros_reserva.html", context)
 
 @require_GET
-def filtrarReservas(request):
+def filtrar_reservas(request):
     filtro_tipo = request.GET.get('filtro_tipo')
     filtro_local = request.GET.get('filtro_local')
     filtro_resp = request.GET.get('filtro_resp')
-    reservasS = ReservaSemanal.objects.all()
-    reservasD = ReservaDiaUnico.objects.all()
+    reservas_s = ReservaSemanal.objects.all()
+    reservas_d = ReservaDiaUnico.objects.all()
 
     reservas = []
-    for res in reservasD:
+    for res in reservas_d:
         reservas.append(res)
-    for res in reservasS:
+    for res in reservas_s:
         reservas.append(res)
 
     context = {"reservas": reservas,
@@ -319,7 +318,7 @@ def filtrarReservas(request):
 
 @require_GET
 # @csrf_exempt
-def reservaDetails(request):
+def reserva_details(request):
     reserva_pk = request.GET.get('reserva_pk')
     reserva_tipo = request.GET.get('reserva_tipo')
 
@@ -334,7 +333,7 @@ def reservaDetails(request):
 
 @require_POST
 # @csrf_exempt
-def getLocaisDia(request):
+def get_locais_dia(request):
     data = json.loads(request.body)
     dia = data['diaInicio']
     diaFim = data['diaFim']
