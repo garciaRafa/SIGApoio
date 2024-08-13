@@ -10,14 +10,12 @@ from django.db.models import Q
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 import json
-from django.views.decorators.http import require_POST, require_GET, require_safe, require_http_methods
 
-@require_GET
+# @require_GET
 def home(request):
     return render(request,'index.html')  
 
-#@require_http_methods(['GET','POST'])
-@require_POST
+# @require_POST
 def cad_local(request):
     if request.method == 'POST':
         form = LocalForm(request.POST)
@@ -29,12 +27,11 @@ def cad_local(request):
     return render(request, 'local/cad_local.html', {'form': form})
 
 
-@require_GET
+# @require_GET
 def success_page(request):
     return render(request, 'local/success_page.html')
 
-# @require_http_methods(['GET','POST'])
-@require_POST
+# @require_POST
 def cadastroRecurso(request):
     if request.method != 'POST':
         form = RecursoForm()
@@ -53,8 +50,8 @@ def cadastroRecurso(request):
     context = {'form': form}
     return render(request, 'recurso/cadastro_recurso.html', context)
 
-#@require_http_methods(['GET','POST'])
-@require_POST
+
+# @require_POST
 def cadastroTipoRecurso(request):
     if request.method != 'POST':
         form = TipoRecursoForm()
@@ -72,7 +69,7 @@ def cadastroTipoRecurso(request):
     context = {'form':form}
     return render(request, 'recurso/cadastro_tipo_recurso.html', context)
 
-@require_POST
+# @require_POST
 def reserva_recurso(request):
     tipos_recursos = TipoRecurso.objects.all()
     
@@ -80,13 +77,13 @@ def reserva_recurso(request):
         reserva_form = ReservaForm(request.POST)
         if reserva_form.is_valid():
             reserva_form.save()
-            return redirect('success_page')  # Ajuste o redirecionamento conforme necessário
+            return redirect('success_page') 
     else:
         reserva_form = ReservaForm()
 
     return render(request, 'recurso/reserva_recurso.html', {'reserva_form': reserva_form, 'tipos_recursos': tipos_recursos})
 
-@require_GET
+# @require_GET
 def listar_emprestimos(request):
     status = request.GET.get('status')
     usuario = request.GET.get('usuario')
@@ -115,7 +112,7 @@ def listar_emprestimos(request):
 
     return render(request, 'emprestimos/lista_emprestimos.html', context)
 
-@require_GET
+# @require_GET
 def listar_local(request):
     locais = Local.objects.all()
     tipo = request.GET.get('tipo')
@@ -142,7 +139,7 @@ def listar_local(request):
     }
     return render(request, 'local/listar_local.html', context)
 
-@require_GET
+# @require_GET
 def listarRecursos(request):
     recursos = Recurso.objects.all()
     recursosDisponiveis = Recurso.objects.filter(status=True)
@@ -153,11 +150,11 @@ def listarRecursos(request):
     context = {'recursos':recursos, 'tipos':tipos, 'recursosDisponiveis':recursosDisponiveis, 'recursosIndisponiveis':recursosIndisponiveis, 'recursosNaoFunciona':recursosNaoFunciona, 'recursosFunciona':recursosFunciona}
     return render(request, 'recurso/listar_recurso.html', context)
 
-@require_GET
+# @require_GET
 def tipoReserva(request):
     return render(request, 'reserva/tipoReserva.html')
 
-@require_POST
+# @require_POST
 def cadastroReservaSemanal(request):
     if request.method != 'POST':
         form = ReservaForm()
@@ -183,7 +180,7 @@ def cadastroReservaSemanal(request):
             context = {'form': form, 'message': 'Erro no cadastro da reserva', 'error': True}
             return render(request, 'reserva/cadastroReserva.html', context)
     
-@require_POST
+# @require_POST
 def cadastroReservaDia(request):
     if request.method != 'POST':
         form = ReservaDiaForm()
@@ -239,8 +236,8 @@ def cadastroReservaDia(request):
             print(error)
             return render(request, 'reserva/cadastroReservaDia.html', context)
       
-@require_POST
-# @csrf_exempt
+# @require_POST
+@csrf_exempt
 def getLocais(request):
     data = json.loads(request.body)
     horarios = data['horarios']
@@ -262,7 +259,7 @@ def getLocais(request):
     context = {'locais':locais_final}
     return render(request, 'reserva/local_option.html', context)
 
-@require_POST
+# @require_POST
 def efetuarChamado(request):
     if request.method != 'POST':
         form = ChamadoForm()
@@ -276,7 +273,7 @@ def efetuarChamado(request):
     context = {'form': form}
     return render(request, 'reserva/efetuar_chamado.html', context)
 
-@require_GET
+# @require_GET
 def listarReservas(request):
     filtro_tipo='default'
 
@@ -289,14 +286,14 @@ def listarReservas(request):
 
     return render(request, "reserva/listar_reservas.html", context)
 
-@require_GET
+# @require_GET
 def filtrosReserva(request):
     filtro = request.GET.get('filtro')
     context = {'filtro': filtro}
 
     return render(request, "reserva/filtros_reserva.html", context)
 
-@require_GET
+# @require_GET
 def filtrarReservas(request):
     filtro_tipo = request.GET.get('filtro_tipo')
     filtro_local = request.GET.get('filtro_local')
@@ -317,9 +314,11 @@ def filtrarReservas(request):
 
     return render(request, "reserva/lista_filtrada.html", context)
 
-@require_GET
-# @csrf_exempt
+# @require_GET
+@csrf_exempt
 def reservaDetails(request):
+    reserva_detail = None
+    
     reserva_pk = request.GET.get('reserva_pk')
     reserva_tipo = request.GET.get('reserva_tipo')
 
@@ -332,8 +331,8 @@ def reservaDetails(request):
     return render(request, 'reserva/reserva_details.html', context)
     
 
-@require_POST
-# @csrf_exempt
+# @require_POST
+@csrf_exempt
 def getLocaisDia(request):
     data = json.loads(request.body)
     dia = data['diaInicio']
