@@ -19,7 +19,7 @@ def converter_horarios_dia(data_inicio, data_final):
     dia_semana_final = dia_hora_final.weekday()
     
     if dia_semana_inicio == 6:
-        dia_semana_inicio = 0 ## domingo = 0
+        dia_semana_inicio = 0 
     else:
         dia_semana_inicio = dia_semana_inicio + 1 ## segunda = 1 e assim em diante
     
