@@ -1,4 +1,5 @@
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.http import require_POST, require_GET, require_safe, require_http_methods
@@ -14,6 +15,7 @@ import json
 # @require_GET
 def home(request):
     return render(request,'index.html')  
+
 
 # @require_POST
 def cad_local(request):
@@ -32,6 +34,7 @@ def success_page(request):
     return render(request, 'local/success_page.html')
 
 # @require_POST
+@login_required(login_url='/usuarios/login/')
 def cadastro_recurso(request):
     if request.method != 'POST':
         form = RecursoForm()
