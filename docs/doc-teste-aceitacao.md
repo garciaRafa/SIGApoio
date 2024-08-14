@@ -24,3 +24,25 @@ Responsabilidade do Gerente
 | Teste 01 – Incluir Produto | Corrigir a implementação do fluxo do user story.	 | Tarefa: Bug de Implementação. |
 | Teste 03 – Alterar Produto | Corrigir a especificação do fluxo do US e sua implementação. | Tarefa: Corrigir a análise do US.  Tarefa: Bug de Implementação. |
 
+
+
+**US05 – Manter Recursos**
+
+| Teste | Descrição | Especificação | Resultado |
+| :---- | :---- | :---- | :---- |
+| Teste 01: Incluir Recurso com sucesso | TA01 \- Incluir Recurso com sucesso		 TA01.1. O usuário preenche os dados; 			 TA01.2. O usuário seleciona a opção Cadastrar; 			 TA01.3. O sistema salva os dados; 			 TA01.4. O sistema exibe uma mensagem de acordo com a \[MSG001\]; TA01.5. Fim do fluxo. | A função implementada não segue os passos TA01.4.  		 | O recurso é inserido, contudo a mensagem \[MSG001\] não foi exibida, após o cadastro do recurso, é retornado à página de cadastro. 		 |
+| Teste 02: Incluir Recurso com erro | TA02 \- Incluir Recurso com erro		 TA02.1. O usuário preenche os dados; 			 TA02.2. O usuário seleciona a opção Cadastrar; 			 TA02.3. O sistema exibe uma mensagem de acordo com a \[MSG002.1\] ou \[MSG002.2\] ; 			 TA02.4.  Fim do fluxo. | Implementação OK.  		 | OK. 		 |
+| Teste 03: Emprestar Recurso com sucesso | TA07 \- Emprestar Recurso com sucesso		 TA07.1. O usuário preenche os dados; 			 TA07.2. O usuário seleciona a opção Confirmar Empréstimo; 			 TA07.3. O sistema exibe uma mensagem de acordo com a \[MSG007\]; 	T107.8. Os dados são salvos.		 TA07.5.  Fim do fluxo. | A função implementada não segue os passos TA07.3.  		 | O empréstimo é realizado, contudo a mensagem \[MSG007\] não foi exibida. 		 |
+| Teste 04: Emprestar Recurso com erro | TA08 \- Emprestar Recurso com erro		 TA08.1. O usuário preenche os dados; 			 TA08.2. O usuário seleciona a opção Confirmar Empréstimo; 			 TA08.3. O sistema exibe uma mensagem de acordo com a \[MSG008\]; 			 TA08.4.  Fim do fluxo. | A função implementada não segue os passos TA08.3.  		 | A mensagem \[MSG008\] não foi exibida, não é possível saber se o recurso está disponível. Também, aparece para emprestar os tipos de recursos e não os recursos.		 |
+
+
+**Relatório de Bugs e Providências**  
+Responsabilidade do Gerente
+
+| Teste | Providência | Tarefas/Tipo |
+| :---- | :---- | :---- |
+| Teste 01 – Incluir Recurso com sucesso| Corrigir a implementação do fluxo do user story.	 | Tarefa: Bug de Implementação. |
+| Teste 03 – Emprestar Recurso com sucesso | Corrigir a implementação do fluxo do user story.	 | Tarefa: Bug de Implementação. |
+| Teste 04 – Emprestar Recurso com erro | Corrigir a especificação do fluxo do US e sua implementação. | Tarefa: Corrigir a análise do US.  Tarefa: Bug de Implementação. |
+=======
+
