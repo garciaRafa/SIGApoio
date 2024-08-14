@@ -25,6 +25,7 @@ Responsabilidade do Gerente
 | Teste 03 – Alterar Produto | Corrigir a especificação do fluxo do US e sua implementação. | Tarefa: Corrigir a análise do US.  Tarefa: Bug de Implementação. |
 
 
+
 **US05 – Manter Recursos**
 
 | Teste | Descrição | Especificação | Resultado |
@@ -43,3 +44,5 @@ Responsabilidade do Gerente
 | Teste 01 – Incluir Recurso com sucesso| Corrigir a implementação do fluxo do user story.	 | Tarefa: Bug de Implementação. |
 | Teste 03 – Emprestar Recurso com sucesso | Corrigir a implementação do fluxo do user story.	 | Tarefa: Bug de Implementação. |
 | Teste 04 – Emprestar Recurso com erro | Corrigir a especificação do fluxo do US e sua implementação. | Tarefa: Corrigir a análise do US.  Tarefa: Bug de Implementação. |
+=======
+
