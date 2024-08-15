@@ -105,7 +105,7 @@ class ReservaForm(forms.ModelForm, forms.Form):
         ],
         widget=forms.SelectMultiple(
             attrs={
-                'class': 'class_style_1'
+                'class': class_style_1
             }
         )
     )
@@ -121,7 +121,7 @@ class ReservaForm(forms.ModelForm, forms.Form):
         ],
         widget=forms.SelectMultiple(
             attrs={
-                'class': 'class_style_1'
+                'class': class_style_1
             }
         )
     )
@@ -140,7 +140,7 @@ class ReservaForm(forms.ModelForm, forms.Form):
         choices=BLOCOS_CHOICES,
         widget=forms.Select(
             attrs={
-                'class': 'class_style_1'
+                'class': class_style_1
             }
         )
     )
@@ -150,7 +150,7 @@ class ReservaForm(forms.ModelForm, forms.Form):
         choices=get_usuario_choices(),
         widget=forms.Select(
             attrs={
-                'class': 'class_style_1'
+                'class': class_style_1
             }
         )
     )    
@@ -159,7 +159,7 @@ class ReservaForm(forms.ModelForm, forms.Form):
         label="Local",
         widget=forms.Select(
             attrs={
-                'class': 'class_style_1'
+                'class': class_style_1
             }
         )
     )
@@ -215,7 +215,7 @@ class ReservaDiaForm(forms.ModelForm, forms.Form):
         choices=[('unico', 'Única'), ('semana', 'Semanal'), ('mes', 'Mensal')],
         widget=forms.Select(
             attrs={
-                'class': 'class_style_1'
+                'class': class_style_1
             },
         )
     )
@@ -234,7 +234,7 @@ class ReservaDiaForm(forms.ModelForm, forms.Form):
         choices=BLOCOS_CHOICES,
         widget=forms.Select(
             attrs={
-                'class': 'class_style_1'
+                'class': class_style_1
             }
         )
     )
