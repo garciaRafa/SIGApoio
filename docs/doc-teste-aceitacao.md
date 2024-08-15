@@ -45,6 +45,16 @@ Responsabilidade do Gerente
 | Teste 02: Incluir Local com erro | TA02 \- Incluir Local com erro		 TA02.1. O usuário preenche os dados; 			 TA02.2. O usuário seleciona a opção Cadastrar; 			 TA02.3. O sistema exibe uma mensagem de acordo com a \[MSG002.1\] ou \[MSG002.2\] ; 			 TA02.4.  Fim do fluxo. | Implementação OK.  		 | OK. 		 |
 =======
 
+
+
+**US07 - Manter Empréstimo**
+
+| Teste | Descrição | Especificação | Resultado |
+| :---- | :---- | :---- | :---- |
+| Teste 01: Incluir Empréstimo com sucesso | TA06.01 - Incluir Empréstimo com sucesso: <br>TA06.01.1. O usuário preenche o nome do responsável e o item; <br>TA06.01.2. O usuário clica na opção *Salvar*; <br>TA06.01.3. O sistema salva os dados; <br>TA06.01.4. O sistema exibe a mensagem: *Empréstimo cadastrado com sucesso.*; <br>TA06.01.5. Fim do fluxo. | A função implementada não segue os passos TA06.01.4. | O empréstimo é inserido, contudo a mensagem "Empréstimo cadastrado com sucesso." não foi exibida. |
+| Teste 02: Incluir Empréstimo com erro | TA06.02 - Incluir Empréstimo com erro: <br>TA06.02.1. O usuário tenta registrar um empréstimo sem preencher o nome do responsável ou com o item já emprestado; <br>TA06.02.2. O sistema exibe a mensagem de erro correspondente: *MSG001: O campo {responsável} é obrigatório* ou *MSG002: O item {id\_item} está emprestado no período escolhido para {responsável}.*; <br>TA06.02.3. Fim do fluxo. | Implementação OK. | OK. |
+| Teste 03: Excluir Empréstimo com sucesso | TA06.03 - Excluir Empréstimo com sucesso: <br>TA06.03.1. O usuário seleciona o empréstimo que deseja excluir; <br>TA06.03.2. O usuário clica no botão *Excluir empréstimo*; <br>TA06.03.3. O sistema exclui o empréstimo; <br>TA06.03.4. O sistema exibe a mensagem: *Empréstimo excluído com sucesso.*; <br>TA06.03.5. Fim do fluxo. | A função implementada não segue os passos TA06.03.4. | O empréstimo é excluído, contudo a mensagem "Empréstimo excluído com sucesso." não foi exibida. |
+
 **US04 – Manter Reservas de Locais**
 
 | Teste | Descrição | Especificação | Resultado |
@@ -53,7 +63,7 @@ Responsabilidade do Gerente
 | Teste 02: Incluir Reserva Semanal com sucesso | *TA02*: O usuário seleciona o tipo Semanal, e abre o formulário. Depois, preenche a descrição, seleciona os dias e horários que irá ocupar, quantidade de pessoas, bloco, o responável e o local e depois clica em Salvar. O sistema exibe a mensagem: MSG001: Local reservado com sucesso. | A função está OK, mas a mensagem está diferente: 'Reserva cadastrada com sucesso.' | A reserva foi cadastrada com sucesso. |
 | Teste 03: Incluir reserva com erro |*TA04.03*: Tentar reservar com erro, exibir a mensagem de erro: MSG001: O campo {campo} é obrigatório. MSG002: O local {id\_local} está reservado no período escolhido. | A mensagem de erro está diferente do esperado, e não informa exatamente qual foi o erro. | Consertar mensagem de erro, para fornecer mais detalhes. |
 | Teste 03 – Incluir reserva com erro | Corrigir a mensagem de erro exibida para fornecer mais detalhes.	 | Tarefa: Corrigir mensagem de erro. |
-=======
+
 
 
 **US12 – Manter Chamado**
@@ -70,3 +80,4 @@ Responsabilidade do Gerente
 | :---- | :---- | :---- |
 | Teste 01 – Enviar Chamado com sucesso| Corrigir a implementação do fluxo do user story.	 | Tarefa: Bug de Implementação. |
 | Teste 02 – Enviar Chamado com erro | Corrigir a implementação do fluxo do user story.	 | Tarefa: Bug de Implementação. |
+
