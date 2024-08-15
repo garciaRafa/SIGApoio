@@ -10,3 +10,27 @@ from json import dumps
 class TestFront(TestCase):
     def setUp(self):
         self.client = APIClient()
+               
+    def test_home(self):
+        res = self.client.get(reverse('home'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+            
+    def test_cad_local_get(self):
+        res = self.client.get(reverse('cad_local'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+    
+    def test_cad_local_post(self):
+        res = self.client.post(reverse('cad_local'), data={
+            'nome':'B3',
+            'bloco':'B',
+            'capacidade':'45', 
+            'tipo':'Sala'})
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+    
+    def test_sucess_page(self):
+        res = self.client.get(reverse('success_page'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        
+    def test_cad_recurso_get(self):
+        res = self.client.get(reverse('cadastro-recurso'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
