@@ -25,16 +25,7 @@ Responsabilidade do Gerente
 | Teste 03 – Alterar Produto | Corrigir a especificação do fluxo do US e sua implementação. | Tarefa: Corrigir a análise do US.  Tarefa: Bug de Implementação. |
 
 
-**US04 - Manter Local**
-
-| Teste | Descrição | Especificação | Resultado |
-| :---- | :---- | :---- | :---- |
-| Teste 01: Incluir Local com sucesso | TA01 \- Incluir Local com sucesso		 TA01.1. O usuário preenche os dados; 			 TA01.2. O usuário seleciona a opção Cadastrar; 			 TA01.3. O sistema salva os dados; 			 TA01.4. O sistema exibe uma mensagem de acordo com a \[MSG001\]; TA01.5. Fim do fluxo. | A função implementada não segue os passos TA01.4.  		 | O local é inserido, contudo a mensagem \[MSG001\] não foi exibida, após o cadastro do recurso, é retornado à página de cadastro. 		 |
-| Teste 02: Incluir Local com erro | TA02 \- Incluir Local com erro		 TA02.1. O usuário preenche os dados; 			 TA02.2. O usuário seleciona a opção Cadastrar; 			 TA02.3. O sistema exibe uma mensagem de acordo com a \[MSG002.1\] ou \[MSG002.2\] ; 			 TA02.4.  Fim do fluxo. | Implementação OK.  		 | OK. 		 |
-
-
-
-**US05 – Manter Recursos**
+**US03 – Manter Recursos**
 
 | Teste | Descrição | Especificação | Resultado |
 | :---- | :---- | :---- | :---- |
@@ -54,3 +45,26 @@ Responsabilidade do Gerente
 | Teste 04 – Emprestar Recurso com erro | Corrigir a especificação do fluxo do US e sua implementação. | Tarefa: Corrigir a análise do US.  Tarefa: Bug de Implementação. |
 =======
 
+**US04 - Manter Local**
+
+| Teste | Descrição | Especificação | Resultado |
+| :---- | :---- | :---- | :---- |
+| Teste 01: Incluir Local com sucesso | TA01 \- Incluir Local com sucesso		 TA01.1. O usuário preenche os dados; 			 TA01.2. O usuário seleciona a opção Cadastrar; 			 TA01.3. O sistema salva os dados; 			 TA01.4. O sistema exibe uma mensagem de acordo com a \[MSG001\]; TA01.5. Fim do fluxo. | A função implementada não segue os passos TA01.4.  		 | O local é inserido, contudo a mensagem \[MSG001\] não foi exibida, após o cadastro do recurso, é retornado à página de cadastro. 		 |
+| Teste 02: Incluir Local com erro | TA02 \- Incluir Local com erro		 TA02.1. O usuário preenche os dados; 			 TA02.2. O usuário seleciona a opção Cadastrar; 			 TA02.3. O sistema exibe uma mensagem de acordo com a \[MSG002.1\] ou \[MSG002.2\] ; 			 TA02.4.  Fim do fluxo. | Implementação OK.  		 | OK. 		 |
+=======
+
+**US04 – Manter Reservas de Locais**
+
+| Teste | Descrição | Especificação | Resultado |
+| :---- | :---- | :---- | :---- |
+| Teste 01: Incluir Reserva Personalizada com sucesso | TA01: O usuário seleciona o tipo Personalizada, e abre o formulário. Depois, preenche a descrição, data e hora de entrada e data e hora de saída, quantidade de pessoas, bloco, o responável e o local e depois clica em Salvar. O sistema exibe a mensagem: MSG001: Local reservado com sucesso.| A função está OK, mas a mensagem está diferente: 'Reserva cadastrada com sucesso.' | A reserva foi cadastrada com sucesso. |
+| Teste 02: Incluir Reserva Semanal com sucesso | *TA02*: O usuário seleciona o tipo Semanal, e abre o formulário. Depois, preenche a descrição, seleciona os dias e horários que irá ocupar, quantidade de pessoas, bloco, o responável e o local e depois clica em Salvar. O sistema exibe a mensagem: MSG001: Local reservado com sucesso. | A função está OK, mas a mensagem está diferente: 'Reserva cadastrada com sucesso.' | A reserva foi cadastrada com sucesso. |
+| Teste 03: Incluir reserva com erro |*TA04.03*: Tentar reservar com erro, exibir a mensagem de erro: MSG001: O campo {campo} é obrigatório. MSG002: O local {id\_local} está reservado no período escolhido. | A mensagem de erro está diferente do esperado, e não informa exatamente qual foi o erro. | Consertar mensagem de erro, para fornecer mais detalhes. |
+
+**Relatório de Bugs e Providências**  
+Responsabilidade do Gerente
+
+| Teste | Providência | Tarefas/Tipo |
+| :---- | :---- | :---- |
+| Teste 03 – Incluir reserva com erro | Corrigir a mensagem de erro exibida para fornecer mais detalhes.	 | Tarefa: Corrigir mensagem de erro. |
+=======
