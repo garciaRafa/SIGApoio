@@ -431,3 +431,41 @@ Imagem a ser inserida futuramente.
 | *TA10.03* | O usuário preenche as novas informações do Auditório no formulário para Editar Auditório, e clica em *Salvar*. Mensagem: *Sala alterada com sucesso*. |
 | *TA10.04* | O usuário tenta excluir a sala desejada, e obtém sucesso. Mensagem:  *Sala excluída com sucesso*. <br>Caso o usuário não tenha essa permissão, o botão para a funcionalidade não é renderizado. |
 | *TA10.05* | Pesquisar com sucesso. Exibição com sucesso dos resultados encontrados ou, caso não haja resultados, exibição vazia (Mensagem: *Nenhum resultado encontrado*.). Testar exibição com paginação. |
+
+
+### User Story US12 - Manter chamado
+
+|               |                                                                |
+| ------------- | :------------------------------------------------------------- |
+| *Descrição* | O sistema deve manter um registro de chamados para cada reserva. Um chamado deve ter os atributos descrição, reserva e status. Cada chamado estará vinculado a uma reserva, seu status poderá ser alterado pelos servidores e bolsistas. |
+
+| *Requisitos envolvidos* | *Descrição*                                                  |
+| ------------- | :------------------------------------------------------------- |
+| RF54          | Efetuar chamado |
+| RF55          | Resolver chamado  |
+| RF56          | Excluir chamado  |
+| RF57          | Listar chamado  |
+
+|                           |                                     |
+| ------------------------- | ----------------------------------- | 
+| *Prioridade*            | Importante                           | 
+| *Estimativa*            | 10h                                 | 
+| *Tempo Gasto (real):*   |                                     | 
+| *Tamanho Funcional*     | 10 PF                               | 
+| *Analista*              | Marlon                              | 
+| *Desenvolvedor*         | Thomas                              | 
+| *Revisor*               | Cleomar                             | 
+| *Testador*              | Rafael                              | 
+
+
+| Testes de Aceitação (TA) |  |
+| ----------- | ------------- |
+| *Código*  | *Descrição* |
+| *TA12.01* | O usuário preenche o campo descrição, seleciona a reserva associada ao chamado e depois clica em *Efetuar chamado*. O sistema exibe a mensagem: *Chamado enviado*. |
+| *TA12.02* | Tentar efetuar um chamado com erro(deixando algum dos campos em branco), exibir a mensagem de erro: *O campo {nome_do_camopo} é obrigatório*. |
+| *TA12.03* | O usuário seleciona o chamado que deseja resolver e clica no botão *resolver*. O status do chamado deve ser alterado e atualizado na página. |
+| *TA12.03* | O usuário seleciona o chamado que deseja remover e clica em *Remover*. O chamado excluido deve ser removido da listagem e a mensagem *chamado excluido!* deverá ser exibida. |
+
+| Protótipo de telas |
+| ------------------ |
+| <p><img src="./images/tela_efetuar_chamado.png" ></p><p>Figura 3 - Tela de Envio de Chamado</p> |

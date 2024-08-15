@@ -44,5 +44,23 @@ Responsabilidade do Gerente
 | Teste 01 – Incluir Recurso com sucesso| Corrigir a implementação do fluxo do user story.	 | Tarefa: Bug de Implementação. |
 | Teste 03 – Emprestar Recurso com sucesso | Corrigir a implementação do fluxo do user story.	 | Tarefa: Bug de Implementação. |
 | Teste 04 – Emprestar Recurso com erro | Corrigir a especificação do fluxo do US e sua implementação. | Tarefa: Corrigir a análise do US.  Tarefa: Bug de Implementação. |
-=======
+=====
+#
 
+
+
+**US12 – Manter Chamado**
+
+| Teste | Descrição | Especificação | Resultado |
+| :---- | :---- | :---- | :---- |
+| Teste 01: Enviar Chamado com sucesso | TA01 \- Enviar Chamado com sucesso		 TA01.1. O usuário preenche os campos; 			 TA01.2. O usuário clica no botão para efetuar o chamado; 			 TA01.3. O sistema salva os dados; 			 TA01.4. O sistema exibe uma mensagem de acordo com a \[MSG001\]; TA01.5. Fim do fluxo. | A função implementada não segue os passos TA01.4.  		 | O chamado é enviado, contudo a mensagem \[MSG001\] não foi exibida, após o envio do chamado, é retornado à página de cadastro. 		 |
+| Teste 02: Enviar Chamado com erro | TA02 \- Enviar Chamado com erro		 TA02.1. O usuário não preenche todos os campos; 			 TA02.2. O usuário clica no botão de efetuar chamado; 			 TA02.3. O sistema exibe uma mensagem de acordo com a \[MSG002.1\]; 			 TA02.4.  Fim do fluxo. | Problema no passo TA02.3.  		 | A mensagem não é exibida contudo o cadastro do chamado também não é realizado. 		 |
+
+
+**Relatório de Bugs e Providências**  
+Responsabilidade do Gerente
+
+| Teste | Providência | Tarefas/Tipo |
+| :---- | :---- | :---- |
+| Teste 01 – Enviar Chamado com sucesso| Corrigir a implementação do fluxo do user story.	 | Tarefa: Bug de Implementação. |
+| Teste 02 – Enviar Chamado com erro | Corrigir a implementação do fluxo do user story.	 | Tarefa: Bug de Implementação. |
