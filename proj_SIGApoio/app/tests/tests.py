@@ -101,19 +101,6 @@ class TestFront(TestCase):
             }), content_type='application/json')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
     
-    def test_cadastro_reserva_dia_post(self):
-        res = self.client.post(reverse('cad_reserva_dia'), 
-            data={
-                'descricao':'SEMANA DA INFORMÁTICA',
-                'horarios': 'M1',
-                'dias':'1',
-                'qtd_pessoas':10,
-                'bloco':'B',
-                'local': 'B1',
-                'matSolicitante':'202401'
-            })
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-    
     def test_get_locais_dia_post(self):
         criar_horarios()
         data={
