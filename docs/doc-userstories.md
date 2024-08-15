@@ -178,9 +178,9 @@ Este documento descreve os User Stories criados a partir da Lista de Requisitos 
 | ----------- | ------------- |
 | *Código*  | *Descrição* |
 | *TA04.01* | O usuário seleciona o tipo Personalizada, e abre o formulário. Depois, preenche a descrição, data e hora de entrada e data e hora de saída, quantidade de pessoas, bloco, o responável e o local e depois clica em Salvar. O sistema exibe a mensagem: MSG001: Local reservado com sucesso. |
-| *TA04.01* | O usuário seleciona o tipo Semanal, e abre o formulário. Depois, preenche a descrição, seleciona os dias e horários que irá ocupar, quantidade de pessoas, bloco, o responável e o local e depois clica em Salvar. O sistema exibe a mensagem: MSG001: Local reservado com sucesso. |
-| *TA04.02* | Tentar reservar com erro, exibir a mensagem de erro: MSG001: O campo {campo} é obrigatório. MSG002: O local {id\_local} está reservado no período escolhido. |
-| *TA04.03* | O usuário seleciona a reserva que deseja excluir e clica no botão *Excluir reserva. Mensagem: *Reserva excluída com sucesso. |
+| *TA04.02* | O usuário seleciona o tipo Semanal, e abre o formulário. Depois, preenche a descrição, seleciona os dias e horários que irá ocupar, quantidade de pessoas, bloco, o responável e o local e depois clica em Salvar. O sistema exibe a mensagem: MSG001: Local reservado com sucesso. |
+| *TA04.03* | Tentar reservar com erro, exibir a mensagem de erro: MSG001: O campo {campo} é obrigatório. MSG002: O local {id\_local} está reservado no período escolhido. |
+| *TA04.04* | O usuário seleciona a reserva que deseja excluir e clica no botão *Excluir reserva. Mensagem: *Reserva excluída com sucesso. |
 
 | Protótipo de telas |
 | ------------------ |
