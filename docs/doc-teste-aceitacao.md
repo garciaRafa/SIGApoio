@@ -45,6 +45,13 @@ Responsabilidade do Gerente
 | Teste 04 – Emprestar Recurso com erro | Corrigir a especificação do fluxo do US e sua implementação. | Tarefa: Corrigir a análise do US.  Tarefa: Bug de Implementação. |
 =======
 
+**US04 - Manter Local**
+
+| Teste | Descrição | Especificação | Resultado |
+| :---- | :---- | :---- | :---- |
+| Teste 01: Incluir Local com sucesso | TA01 \- Incluir Local com sucesso		 TA01.1. O usuário preenche os dados; 			 TA01.2. O usuário seleciona a opção Cadastrar; 			 TA01.3. O sistema salva os dados; 			 TA01.4. O sistema exibe uma mensagem de acordo com a \[MSG001\]; TA01.5. Fim do fluxo. | A função implementada não segue os passos TA01.4.  		 | O local é inserido, contudo a mensagem \[MSG001\] não foi exibida, após o cadastro do recurso, é retornado à página de cadastro. 		 |
+| Teste 02: Incluir Local com erro | TA02 \- Incluir Local com erro		 TA02.1. O usuário preenche os dados; 			 TA02.2. O usuário seleciona a opção Cadastrar; 			 TA02.3. O sistema exibe uma mensagem de acordo com a \[MSG002.1\] ou \[MSG002.2\] ; 			 TA02.4.  Fim do fluxo. | Implementação OK.  		 | OK. 		 |
+=======
 
 **US04 – Manter Reservas de Locais**
 
