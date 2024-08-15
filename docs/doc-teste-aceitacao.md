@@ -46,3 +46,11 @@ Responsabilidade do Gerente
 | Teste 04 – Emprestar Recurso com erro | Corrigir a especificação do fluxo do US e sua implementação. | Tarefa: Corrigir a análise do US.  Tarefa: Bug de Implementação. |
 =======
 
+
+**US07 - Manter Empréstimo**
+
+| Teste | Descrição | Especificação | Resultado |
+| :---- | :---- | :---- | :---- |
+| Teste 01: Incluir Empréstimo com sucesso | TA06.01 - Incluir Empréstimo com sucesso: <br>TA06.01.1. O usuário preenche o nome do responsável e o item; <br>TA06.01.2. O usuário clica na opção *Salvar*; <br>TA06.01.3. O sistema salva os dados; <br>TA06.01.4. O sistema exibe a mensagem: *Empréstimo cadastrado com sucesso.*; <br>TA06.01.5. Fim do fluxo. | A função implementada não segue os passos TA06.01.4. | O empréstimo é inserido, contudo a mensagem "Empréstimo cadastrado com sucesso." não foi exibida. |
+| Teste 02: Incluir Empréstimo com erro | TA06.02 - Incluir Empréstimo com erro: <br>TA06.02.1. O usuário tenta registrar um empréstimo sem preencher o nome do responsável ou com o item já emprestado; <br>TA06.02.2. O sistema exibe a mensagem de erro correspondente: *MSG001: O campo {responsável} é obrigatório* ou *MSG002: O item {id\_item} está emprestado no período escolhido para {responsável}.*; <br>TA06.02.3. Fim do fluxo. | Implementação OK. | OK. |
+| Teste 03: Excluir Empréstimo com sucesso | TA06.03 - Excluir Empréstimo com sucesso: <br>TA06.03.1. O usuário seleciona o empréstimo que deseja excluir; <br>TA06.03.2. O usuário clica no botão *Excluir empréstimo*; <br>TA06.03.3. O sistema exclui o empréstimo; <br>TA06.03.4. O sistema exibe a mensagem: *Empréstimo excluído com sucesso.*; <br>TA06.03.5. Fim do fluxo. | A função implementada não segue os passos TA06.03.4. | O empréstimo é excluído, contudo a mensagem "Empréstimo excluído com sucesso." não foi exibida. |
