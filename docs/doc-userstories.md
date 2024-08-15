@@ -276,6 +276,44 @@ Este documento descreve os User Stories criados a partir da Lista de Requisitos 
 | Testes de Aceitação (TA) |  |
 | ----------- | ------------- |
 | *Código*  | *Descrição* |
-| *TA08.01* | O usuário informa o recurso e o mês e depois clica em *Exibir relatório. O sistema exibe a mensagem: *Relatório gerado com sucesso. Em seguida o relatório é processado e exibido. |
-| *TA08.02* | Tentar gerar relatório com erro, exibir a mensagem de erro: MSG001: O campo {recurso} é obrigatório. MSG002: O campo {mês} é obrigatório. |
-| *TA08.03* | O usuário informa um recurso que nunca foi reservado anteriormente. O sistema exibe um relatório em branco e uma mensagem informando: O recurso não foi emprestado ainda. |
+| *TA07.01* | O usuário informa o recurso e o mês e depois clica em *Exibir relatório. O sistema exibe a mensagem: *Relatório gerado com sucesso. Em seguida o relatório é processado e exibido. |
+| *TA07.02* | Tentar gerar relatório com erro, exibir a mensagem de erro: MSG001: O campo {recurso} é obrigatório. MSG002: O campo {mês} é obrigatório. |
+| *TA07.03* | O usuário informa um recurso que nunca foi reservado anteriormente. O sistema exibe um relatório em branco e uma mensagem informando: O recurso não foi emprestado ainda. |
+
+
+### User Story US08 - Manter chamado
+
+|               |                                                                |
+| ------------- | :------------------------------------------------------------- |
+| *Descrição* | O sistema deve manter um registro de chamados para cada reserva. Um chamado deve ter os atributos descrição, reserva e status. Cada chamado estará vinculado a uma reserva, seu status poderá ser alterado pelos servidores e bolsistas. |
+
+| *Requisitos envolvidos* | *Descrição*                                                  |
+| ------------- | :------------------------------------------------------------- |
+| RF54          | Efetuar chamado |
+| RF55          | Resolver chamado  |
+| RF56          | Excluir chamado  |
+| RF57          | Listar chamado  |
+
+|                           |                                     |
+| ------------------------- | ----------------------------------- | 
+| *Prioridade*            | Importante                           | 
+| *Estimativa*            | 10h                                 | 
+| *Tempo Gasto (real):*   |                                     | 
+| *Tamanho Funcional*     | 10 PF                               | 
+| *Analista*              | Marlon                              | 
+| *Desenvolvedor*         | Thomas                              | 
+| *Revisor*               | Cleomar                             | 
+| *Testador*              | Rafael                              | 
+
+
+| Testes de Aceitação (TA) |  |
+| ----------- | ------------- |
+| *Código*  | *Descrição* |
+| *TA08.01* | O usuário preenche o campo descrição, seleciona a reserva associada ao chamado e depois clica em *Efetuar chamado*. O sistema exibe a mensagem: *Chamado enviado*. |
+| *TA08.02* | Tentar efetuar um chamado com erro(deixando algum dos campos em branco), exibir a mensagem de erro: *O campo {nome_do_camopo} é obrigatório*. |
+| *TA08.03* | O usuário seleciona o chamado que deseja resolver e clica no botão *resolver*. O status do chamado deve ser alterado e atualizado na página. |
+| *TA08.03* | O usuário seleciona o chamado que deseja remover e clica em *Remover*. O chamado excluido deve ser removido da listagem e a mensagem *chamado excluido!* deverá ser exibida. |
+
+| Protótipo de telas |
+| ------------------ |
+| <p><img src="./images/tela_efetuar_chamado.png" ></p><p>Figura 3 - Tela de Envio de Chamado</p> |

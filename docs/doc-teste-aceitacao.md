@@ -43,7 +43,8 @@ Responsabilidade do Gerente
 | Teste 01 – Incluir Recurso com sucesso| Corrigir a implementação do fluxo do user story.	 | Tarefa: Bug de Implementação. |
 | Teste 03 – Emprestar Recurso com sucesso | Corrigir a implementação do fluxo do user story.	 | Tarefa: Bug de Implementação. |
 | Teste 04 – Emprestar Recurso com erro | Corrigir a especificação do fluxo do US e sua implementação. | Tarefa: Corrigir a análise do US.  Tarefa: Bug de Implementação. |
-=======
+=====
+#
 
 **US04 - Manter Local**
 
@@ -60,11 +61,21 @@ Responsabilidade do Gerente
 | Teste 01: Incluir Reserva Personalizada com sucesso | TA01: O usuário seleciona o tipo Personalizada, e abre o formulário. Depois, preenche a descrição, data e hora de entrada e data e hora de saída, quantidade de pessoas, bloco, o responável e o local e depois clica em Salvar. O sistema exibe a mensagem: MSG001: Local reservado com sucesso.| A função está OK, mas a mensagem está diferente: 'Reserva cadastrada com sucesso.' | A reserva foi cadastrada com sucesso. |
 | Teste 02: Incluir Reserva Semanal com sucesso | *TA02*: O usuário seleciona o tipo Semanal, e abre o formulário. Depois, preenche a descrição, seleciona os dias e horários que irá ocupar, quantidade de pessoas, bloco, o responável e o local e depois clica em Salvar. O sistema exibe a mensagem: MSG001: Local reservado com sucesso. | A função está OK, mas a mensagem está diferente: 'Reserva cadastrada com sucesso.' | A reserva foi cadastrada com sucesso. |
 | Teste 03: Incluir reserva com erro |*TA04.03*: Tentar reservar com erro, exibir a mensagem de erro: MSG001: O campo {campo} é obrigatório. MSG002: O local {id\_local} está reservado no período escolhido. | A mensagem de erro está diferente do esperado, e não informa exatamente qual foi o erro. | Consertar mensagem de erro, para fornecer mais detalhes. |
+| Teste 03 – Incluir reserva com erro | Corrigir a mensagem de erro exibida para fornecer mais detalhes.	 | Tarefa: Corrigir mensagem de erro. |
+=======
+
+
+**US12 – Manter Chamado**
+
+| Teste | Descrição | Especificação | Resultado |
+| :---- | :---- | :---- | :---- |
+| Teste 01: Enviar Chamado com sucesso | TA01 \- Enviar Chamado com sucesso		 TA01.1. O usuário preenche os campos; 			 TA01.2. O usuário clica no botão para efetuar o chamado; 			 TA01.3. O sistema salva os dados; 			 TA01.4. O sistema exibe uma mensagem de acordo com a \[MSG001\]; TA01.5. Fim do fluxo. | A função implementada não segue os passos TA01.4.  		 | O chamado é enviado, contudo a mensagem \[MSG001\] não foi exibida, após o envio do chamado, é retornado à página de cadastro. 		 |
+| Teste 02: Enviar Chamado com erro | TA02 \- Enviar Chamado com erro		 TA02.1. O usuário não preenche todos os campos; 			 TA02.2. O usuário clica no botão de efetuar chamado; 			 TA02.3. O sistema exibe uma mensagem de acordo com a \[MSG002.1\]; 			 TA02.4.  Fim do fluxo. | Problema no passo TA02.3.  		 | A mensagem não é exibida contudo o cadastro do chamado também não é realizado. 		 |
 
 **Relatório de Bugs e Providências**  
 Responsabilidade do Gerente
 
 | Teste | Providência | Tarefas/Tipo |
 | :---- | :---- | :---- |
-| Teste 03 – Incluir reserva com erro | Corrigir a mensagem de erro exibida para fornecer mais detalhes.	 | Tarefa: Corrigir mensagem de erro. |
-=======
+| Teste 01 – Enviar Chamado com sucesso| Corrigir a implementação do fluxo do user story.	 | Tarefa: Bug de Implementação. |
+| Teste 02 – Enviar Chamado com erro | Corrigir a implementação do fluxo do user story.	 | Tarefa: Bug de Implementação. |
