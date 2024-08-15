@@ -1,12 +1,9 @@
-import os, sys
+import os
 import django
-from django.core.management import execute_from_command_line
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 django.setup()
 
-from app.models import TipoRecurso, Recurso, TipoUsuario, TipoLocal, Local, Horario
-import random
-from django.contrib.auth.models import User
+from app.models import Horario
 def generate_schedule():
     schedule = []
     time_slots = {
@@ -46,16 +43,19 @@ def generate_schedule():
     
     return schedule
 
-# Gerar horários
-horarios = generate_schedule()
+def criar_horarios():
+    # Gerar horários
+    horarios = generate_schedule()
 
-# Inserir ou atualizar registros
-for horario in horarios:
-    Horario.objects.get_or_create(
-        id=horario['id'],
-        defaults={
-            'dia': horario['dia'],
-            'horaInicio': horario['horaInicio'],
-            'horaFim': horario['horaFim']
-        }
-    )
+    # Inserir ou atualizar registros
+    for horario in horarios:
+        Horario.objects.get_or_create(
+            id=horario['id'],
+            defaults={
+                'dia': horario['dia'],
+                'horaInicio': horario['horaInicio'],
+                'horaFim': horario['horaFim']
+            }
+        )
+
+criar_horarios()
