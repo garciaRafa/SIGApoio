@@ -18,6 +18,7 @@ def home(request):
 
 
 # @require_POST
+@login_required(login_url='/usuarios/login/')
 def cad_local(request):
     if request.method == 'POST':
         form = LocalForm(request.POST)
@@ -54,6 +55,7 @@ def cadastro_recurso(request):
     return render(request, 'recurso/cadastro_recurso.html', context)
 
 # @require_POST
+@login_required(login_url='/usuarios/login/')
 def cadastro_tipo_recurso(request):
     if request.method != 'POST':
         form = TipoRecursoForm()
@@ -72,6 +74,7 @@ def cadastro_tipo_recurso(request):
     return render(request, 'recurso/cadastro_tipo_recurso.html', context)
 
 # @require_POST
+@login_required(login_url='/usuarios/login/')
 def reserva_recurso(request):
     tipos_recursos = TipoRecurso.objects.all()
     
@@ -86,6 +89,7 @@ def reserva_recurso(request):
     return render(request, 'recurso/reserva_recurso.html', {'reserva_form': reserva_form, 'tipos_recursos': tipos_recursos})
 
 # @require_GET
+@login_required(login_url='/usuarios/login/')
 def listar_emprestimos(request):
     status = request.GET.get('status')
     usuario = request.GET.get('usuario')
@@ -115,6 +119,7 @@ def listar_emprestimos(request):
     return render(request, 'emprestimos/lista_emprestimos.html', context)
 
 # @require_GET
+@login_required(login_url='/usuarios/login/')
 def listar_local(request):
     locais = Local.objects.all()
     tipo = request.GET.get('tipo')
@@ -142,6 +147,7 @@ def listar_local(request):
     return render(request, 'local/listar_local.html', context)
 
 # @require_GET
+@login_required(login_url='/usuarios/login/')
 def listar_recursos(request):
     recursos = Recurso.objects.all()
     recursos_disponiveis = Recurso.objects.filter(status=True)
@@ -153,10 +159,12 @@ def listar_recursos(request):
     return render(request, 'recurso/listar_recurso.html', context)
 
 # @require_GET
+@login_required(login_url='/usuarios/login/')
 def tipo_reserva(request):
     return render(request, 'reserva/tipoReserva.html')
 
 # @require_POST
+@login_required(login_url='/usuarios/login/')
 def cadastro_reserva_semanal(request):
     if request.method != 'POST':
         form = ReservaForm()
@@ -183,6 +191,7 @@ def cadastro_reserva_semanal(request):
             return render(request, 'reserva/cadastroReserva.html', context)
     
 # @require_POST
+@login_required(login_url='/usuarios/login/')
 def cadastro_reserva_dia(request):
     if request.method != 'POST':
         form = ReservaDiaForm()
@@ -262,6 +271,7 @@ def get_locais(request):
     return render(request, 'reserva/local_option.html', context)
 
 # @require_POST
+@login_required(login_url='/usuarios/login/')
 def efetuar_chamado(request):
     if request.method != 'POST':
         form = ChamadoForm()
@@ -276,6 +286,7 @@ def efetuar_chamado(request):
     return render(request, 'reserva/efetuar_chamado.html', context)
 
 # @require_GET
+@login_required(login_url='/usuarios/login/')
 def listar_reservas(request):
     filtro_tipo='default'
 
@@ -296,6 +307,7 @@ def filtros_reserva(request):
     return render(request, "reserva/filtros_reserva.html", context)
 
 # @require_GET
+
 def filtrar_reservas(request):
     filtro_tipo = request.GET.get('filtro_tipo')
     filtro_local = request.GET.get('filtro_local')
