@@ -89,8 +89,20 @@
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
                     aria-label="Close"></button>
             </div>
-            <div class="offcanvas-body">
-                Home
+            <div class="offcanvas-body">  
+                <ul class="sidebar-nav">
+                    {% if user.is_authenticated %}
+                      <li>User: {{ user.get_username }}</li>
+                      <li>Você é : {{user.get_user_permissions }}</li>
+                        <form method="post" action="{% url 'logout' %}">
+                          {% csrf_token %}
+                          <input type="hidden" name="next" value="{{ request.path }}">
+                          <button type="submit">Logout</button>
+                        </form>
+                    {% else %}
+                      <li><a href="{% url 'login' %}?next={{ request.path }}">Login</a></li>
+                    {% endif %}
+                  </ul>
             </div>
         </div>
     </div>
