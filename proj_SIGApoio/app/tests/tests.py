@@ -112,3 +112,29 @@ class TestFront(TestCase):
             }
         res = self.client.post(reverse('getLocaisDia'), data=dumps(data), content_type='application/json')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
+        
+    def test_get_locais_post(self):
+        res = self.client.post(reverse('getLocais'), 
+            data=dumps({
+                'horarios': ['M1'],
+                'dias':'1',
+                'pessoas':10,
+                'bloco':'B',
+            }), content_type='application/json')
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        
+    def test_listar_reservas_get(self):
+        res = self.client.get(reverse('listar-reservas'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        
+    def test_filtros_reserva_get(self):
+        res = self.client.get(reverse('filtros-reserva'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        
+    def test_filtrar_reservas_get(self):
+        res = self.client.get(reverse('filtrar-reservas'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        
+    def test_reserva_details_get(self):
+        res = self.client.get(reverse('reservaDetails'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
