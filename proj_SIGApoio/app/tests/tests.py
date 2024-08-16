@@ -130,3 +130,10 @@ def test_efetuar_chamado_post(self):
     res = self.client.post(reverse('efetuar-chamado'), data={'chamado':'HDMI não funciona!','reserva':1})
     self.assertEqual(res.status_code, status.HTTP_200_OK)
     
+def test_cadastro_tipo_recurso_get(self):
+    res = self.client.get(reverse('cadastro-tipo-recurso'))
+    self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+def test_cadastro_tipo_recurso_post(self):
+    res = self.client.post(reverse('cadastro-tipo-recurso'), data={'tipo':'HDMI'})
+    self.assertEqual(res.status_code, status.HTTP_302_FOUND)
