@@ -121,4 +121,12 @@ def test_cad_recurso_post(self):
         'funcionando':True
     })
     self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+def test_efetuar_chamado_get(self):
+    res = self.client.get(reverse('efetuar-chamado'))
+    self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+def test_efetuar_chamado_post(self):
+    res = self.client.post(reverse('efetuar-chamado'), data={'chamado':'HDMI não funciona!','reserva':1})
+    self.assertEqual(res.status_code, status.HTTP_200_OK)
     
