@@ -113,27 +113,92 @@ class TestFront(TestCase):
         res = self.client.post(reverse('getLocaisDia'), data=dumps(data), content_type='application/json')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         
-def test_cad_recurso_post(self):
-    res = self.client.post(reverse('cadastro-recurso'), data={
-        'codigo':52,
-        'tipo':'HDMI',
-        'status':False,
-        'funcionando':True
-    })
-    self.assertEqual(res.status_code, status.HTTP_200_OK)
+    def test_cad_recurso_post(self):
+        res = self.client.post(reverse('cadastro-recurso'), data={
+            'codigo':52,
+            'tipo':'HDMI',
+            'status':False,
+            'funcionando':True
+        })
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
 
-def test_efetuar_chamado_get(self):
-    res = self.client.get(reverse('efetuar-chamado'))
-    self.assertEqual(res.status_code, status.HTTP_200_OK)
+    def test_efetuar_chamado_get(self):
+        res = self.client.get(reverse('efetuar-chamado'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
 
-def test_efetuar_chamado_post(self):
-    res = self.client.post(reverse('efetuar-chamado'), data={'chamado':'HDMI não funciona!','reserva':1})
-    self.assertEqual(res.status_code, status.HTTP_200_OK)
+    def test_efetuar_chamado_post(self):
+        res = self.client.post(reverse('efetuar-chamado'), data={'chamado':'HDMI não funciona!','reserva':1})
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_cadastro_tipo_recurso_get(self):
+        res = self.client.get(reverse('cadastro-tipo-recurso'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_cadastro_tipo_recurso_post(self):
+        res = self.client.post(reverse('cadastro-tipo-recurso'), data={'tipo':'HDMI'})
+        self.assertEqual(res.status_code, status.HTTP_302_FOUND)
+
+    def test_get_locais_post(self):
+        res = self.client.post(reverse('getLocais'), 
+            data=dumps({
+                'horarios': ['M1'],
+                'dias':'1',
+                'pessoas':10,
+                'bloco':'B',
+            }), content_type='application/json')
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        
+    def test_listar_reservas_get(self):
+        res = self.client.get(reverse('listar-reservas'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        
+    def test_filtros_reserva_get(self):
+        res = self.client.get(reverse('filtros-reserva'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        
+    def test_filtrar_reservas_get(self):
+        res = self.client.get(reverse('filtrar-reservas'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        
+    def test_reserva_details_get(self):
+        res = self.client.get(reverse('reservaDetails'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_tipo_reserva_get(self):
+        res = self.client.get(reverse('cad_reserva'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
     
-def test_cadastro_tipo_recurso_get(self):
-    res = self.client.get(reverse('cadastro-tipo-recurso'))
-    self.assertEqual(res.status_code, status.HTTP_200_OK)
+    def test_cadastro_reserva_semanal_get(self):
+        res = self.client.get(reverse('cad_reserva_semanal'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+    
+    def test_cadastro_reserva_semanal_post(self):
+        res = self.client.post(reverse('cad_reserva_semanal'), 
+            data={
+                'descricao':'SEMANA DA INFORMÁTICA',
+                'horarios': 'M1',
+                'dias':'1',
+                'qtd_pessoas':10,
+                'bloco':'B',
+                'local': 'B1',
+                'matSolicitante':'202401'
+            })
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        
+    def test_cadastro_Reserva_dia_get(self):
+        res = self.client.get(reverse('cad_reserva_dia'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+    
+    def test_cadastro_Reserva_dia_post(self):
+        res = self.client.post(reverse('cad_reserva_dia'), 
+            data={
+                'descricao':'SEMANA DA INFORMÁTICA',
+                'horarios': 'M1',
+                'dias':'1',
+                'qtd_pessoas':10,
+                'bloco':'B',
+                'local': 'B1',
+                'matSolicitante':'202401'
+            })
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
 
-def test_cadastro_tipo_recurso_post(self):
-    res = self.client.post(reverse('cadastro-tipo-recurso'), data={'tipo':'HDMI'})
-    self.assertEqual(res.status_code, status.HTTP_302_FOUND)
