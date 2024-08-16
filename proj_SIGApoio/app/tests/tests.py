@@ -112,3 +112,13 @@ class TestFront(TestCase):
             }
         res = self.client.post(reverse('getLocaisDia'), data=dumps(data), content_type='application/json')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
+        
+def test_cad_recurso_post(self):
+    res = self.client.post(reverse('cadastro-recurso'), data={
+        'codigo':52,
+        'tipo':'HDMI',
+        'status':False,
+        'funcionando':True
+    })
+    self.assertEqual(res.status_code, status.HTTP_200_OK)
+    
