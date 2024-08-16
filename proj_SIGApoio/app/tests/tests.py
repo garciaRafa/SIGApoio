@@ -4,13 +4,24 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
+from django.contrib.auth.models import User
 from json import dumps
 from populate_horarios import criar_horarios
 
 class TestFront(TestCase):
     def setUp(self):
         self.client = APIClient()
+        self.user = User.objects.create_user(username='usuario_de_teste', password='pass')
+        self.client.login(username='usuario_de_teste', password='pass')
+        
                
+    def test_login(self):
+        login = self.client.login(username='usuario_de_teste', password='pass')
+        self.assertTrue(login)
+
+        res = self.client.get(reverse('cad_local'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
     def test_home(self):
         res = self.client.get(reverse('home'))
         self.assertEqual(res.status_code, status.HTTP_200_OK)
