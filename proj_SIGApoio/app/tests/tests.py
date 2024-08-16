@@ -113,6 +113,31 @@ class TestFront(TestCase):
         res = self.client.post(reverse('getLocaisDia'), data=dumps(data), content_type='application/json')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         
+    def test_cad_recurso_post(self):
+        res = self.client.post(reverse('cadastro-recurso'), data={
+            'codigo':52,
+            'tipo':'HDMI',
+            'status':False,
+            'funcionando':True
+        })
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_efetuar_chamado_get(self):
+        res = self.client.get(reverse('efetuar-chamado'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_efetuar_chamado_post(self):
+        res = self.client.post(reverse('efetuar-chamado'), data={'chamado':'HDMI não funciona!','reserva':1})
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_cadastro_tipo_recurso_get(self):
+        res = self.client.get(reverse('cadastro-tipo-recurso'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_cadastro_tipo_recurso_post(self):
+        res = self.client.post(reverse('cadastro-tipo-recurso'), data={'tipo':'HDMI'})
+        self.assertEqual(res.status_code, status.HTTP_302_FOUND)
+
     def test_get_locais_post(self):
         res = self.client.post(reverse('getLocais'), 
             data=dumps({
@@ -176,3 +201,4 @@ class TestFront(TestCase):
                 'matSolicitante':'202401'
             })
         self.assertEqual(res.status_code, status.HTTP_200_OK)
+
