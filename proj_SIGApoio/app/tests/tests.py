@@ -138,3 +138,41 @@ class TestFront(TestCase):
     def test_reserva_details_get(self):
         res = self.client.get(reverse('reservaDetails'))
         self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_tipo_reserva_get(self):
+        res = self.client.get(reverse('cad_reserva'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+    
+    def test_cadastro_reserva_semanal_get(self):
+        res = self.client.get(reverse('cad_reserva_semanal'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+    
+    def test_cadastro_reserva_semanal_post(self):
+        res = self.client.post(reverse('cad_reserva_semanal'), 
+            data={
+                'descricao':'SEMANA DA INFORMÁTICA',
+                'horarios': 'M1',
+                'dias':'1',
+                'qtd_pessoas':10,
+                'bloco':'B',
+                'local': 'B1',
+                'matSolicitante':'202401'
+            })
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        
+    def test_cadastro_Reserva_dia_get(self):
+        res = self.client.get(reverse('cad_reserva_dia'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+    
+    def test_cadastro_Reserva_dia_post(self):
+        res = self.client.post(reverse('cad_reserva_dia'), 
+            data={
+                'descricao':'SEMANA DA INFORMÁTICA',
+                'horarios': 'M1',
+                'dias':'1',
+                'qtd_pessoas':10,
+                'bloco':'B',
+                'local': 'B1',
+                'matSolicitante':'202401'
+            })
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
