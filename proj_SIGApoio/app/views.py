@@ -1,6 +1,9 @@
-from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as login_django
 from django.urls import reverse
 from django.views.decorators.http import require_POST, require_GET, require_safe, require_http_methods
 from .forms import LocalForm, RecursoForm, TipoRecursoForm, ReservaForm, ChamadoForm, ReservaDiaForm
@@ -17,8 +20,74 @@ def home(request):
     return render(request,'index.html')  
 
 
+from django.contrib.auth.views import (
+    PasswordResetCompleteView,
+    PasswordResetConfirmView
+)
+from django.shortcuts import redirect, render
+
+
+
+
+
+def cadastro_usuario(request):
+    if request.method == "GET":
+        return render(request, 'registration/registration_form.html')
+    else:
+        username= request.POST.get ('username')
+        email_cad= request.POST.get ('email')
+        confirma_email= request.POST.get('confirm_email')
+        senha = request.POST.get ('password')
+        confirma_senha = request.POST.get ('confirm_password') 
+        
+        user = User.objects.filter(username=username).first()
+        email = User.objects.filter(email=email_cad).first()
+        
+        if user:
+            return HttpResponse("Já existe usuario cadastrado")
+        if email:
+            return HttpResponse("Já existe login com esse e-mail")
+        if confirma_senha != senha:
+            return HttpResponse("As senhas não coincidem")
+        if confirma_email != email_cad:
+            print(email_cad, confirma_email)
+            return HttpResponse("E-mails diferentes")
+        else:
+            user = User.objects.create_user(username= username, email=email_cad, password=senha)
+            user.save()
+            return HttpResponseRedirect(reverse('login'))
+            
+def login(request):
+    if request.method== "GET":
+        return render(request, 'login.html')
+    else:
+        username = request.POST.get('username')
+        senha =  request.POST.get('password')
+        user = User.objects.filter(username=username).first()
+        user= authenticate(username= username, password= senha)
+        if user:
+            login_django(request, user)
+            return HttpResponse('autenticado')
+        else:
+            print("n achou")
+            return HttpResponse('Não tá autenticado')
+
+                
+    # form = cad_user(request.POST or None)
+    # if request.method == 'POST':
+    #     if form.is_valid():
+    #         user = form.save()
+    #         return redirect('login')
+    # return render(request, template_name)
+
+
+
+
+
+
 # @require_POST
 @login_required(login_url='/usuarios/login/')
+@permission_required('cadastrorecurso')
 def cad_local(request):
     if request.method == 'POST':
         form = LocalForm(request.POST)
