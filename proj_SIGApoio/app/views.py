@@ -246,7 +246,19 @@ def cadastro_reserva_dia(request):
             context = {'form': form, 'message': 'Erro no cadastro da reserva', 'error': True}
             print(error)
             return render(request, 'reserva/cadastroReservaDia.html', context)
+    
+# @require_http_methods(['DELETE'])    
+def delete_reserva_semanal(request, id):
+    reserva = ReservaSemanal.objects.get(pk=id)
+    reserva.delete()
+    return HttpResponseRedirect(reverse('listar-reservas'))
       
+# @require_http_methods(['DELETE'])    
+def delete_reserva_dia(request, id):
+    reserva = ReservaDiaUnico.objects.get(pk=int(id))
+    reserva.delete()
+    return HttpResponseRedirect(reverse('listar-reservas'))
+
 # @require_POST
 @csrf_exempt
 def get_locais(request):

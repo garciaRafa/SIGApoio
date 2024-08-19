@@ -1,6 +1,7 @@
 from django import template
 from ..models import TipoRecurso, Recurso, Local, ReservaSemanal, ReservaDiaUnico, Usuario, Horario, TipoLocal, Chamado
 from django.utils.safestring import mark_safe
+from django.urls import reverse
 
 register = template.Library()
 
@@ -114,13 +115,14 @@ def linha_tabela(reserva):
     
     if isinstance(reserva, ReservaDiaUnico):
         tipo = "Dia Único"
-        stipo = 'D'
+        delete_url = reverse('delete_reserva_dia', kwargs={'id': reserva.pk})
     elif isinstance(reserva, ReservaSemanal):
         tipo = "Semanal"
-        stipo = 'S'
+        delete_url = reverse('delete_reserva_semanal', kwargs={'id': reserva.pk})
     else:
         tipo = "undefined"
-        stipo = "M"
+        
+    stipo = get_tipo_reserva(reserva)
 
     result = f"""
         <tr>
@@ -129,6 +131,7 @@ def linha_tabela(reserva):
             <td>{tipo}</td>
             <td>{reserva.local}</td>
             <td>{reserva.matResponsavel.nome}</td>
+            <td><button id="deletebtn_{stipo}_{reserva.pk}" onClick="openDeleteModal(event)" delete_url={delete_url}>Excluir</button></td>
         </tr>
     """
 

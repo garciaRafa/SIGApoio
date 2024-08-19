@@ -1,4 +1,4 @@
-from .views import efetuar_chamado, home, get_locais, cadastro_recurso, cad_local, listar_local, success_page, cadastro_tipo_recurso, listar_recursos, cadastro_reserva_semanal, tipo_reserva, cadastro_reserva_dia, reserva_recurso, listar_reservas, reserva_details, filtrar_reservas, filtros_reserva, get_locais_dia, listar_emprestimos
+from .views import efetuar_chamado, home, get_locais, cadastro_recurso, cad_local, listar_local, success_page, cadastro_tipo_recurso, listar_recursos, cadastro_reserva_semanal, tipo_reserva, cadastro_reserva_dia, delete_reserva_dia, delete_reserva_semanal, reserva_recurso, listar_reservas, reserva_details, filtrar_reservas, filtros_reserva, get_locais_dia, listar_emprestimos
 from django.urls import path, include
 from django.contrib.auth.views import LogoutView 
 
@@ -22,6 +22,8 @@ urlpatterns = [
     path('reserva/cadastro/semanal', cadastro_reserva_semanal, name = "cad_reserva_semanal"),
     path('reserva/cadastro/dia', cadastro_reserva_dia, name = "cad_reserva_dia"),
     path('reserva/cadastro/', tipo_reserva, name = "cad_reserva"),
+    path('reserva/delete/semanal/<int:id>', delete_reserva_semanal, name = "delete_reserva_semanal"),
+    path('reserva/delete/dia/<int:id>', delete_reserva_dia, name = "delete_reserva_dia"),
     path('get_locais/', get_locais, name = "getLocais"),
     path('get_locais_dia/', get_locais_dia, name = "getLocaisDia"),
     path('usuarios/', include('django.contrib.auth.urls')),
