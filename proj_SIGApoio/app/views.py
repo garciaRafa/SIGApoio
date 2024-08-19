@@ -379,3 +379,7 @@ def get_locais_dia(request):
     context = {'locais':locais_final}
     return render(request, 'reserva/local_option.html', context)
 
+def recurso_delete(request, id):
+    recurso = Recurso.objects.get(pk=id)
+    recurso.delete()
+    return redirect('listar-recurso')
