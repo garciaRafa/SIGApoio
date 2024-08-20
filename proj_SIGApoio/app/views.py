@@ -255,9 +255,53 @@ def delete_reserva_semanal(request, id):
       
 # @require_http_methods(['DELETE'])    
 def delete_reserva_dia(request, id):
-    reserva = ReservaDiaUnico.objects.get(pk=int(id))
+    reserva = ReservaDiaUnico.objects.get(id)
     reserva.delete()
     return HttpResponseRedirect(reverse('listar-reservas'))
+
+def editar_reserva_semanal(request, id):
+    reserva = ReservaSemanal.objects.get(pk=id)
+    
+    if request.method == 'POST':  
+        reserva.diaHoraInicio = datetime.strptime(request.POST.get('diaHoraInicio'),'%Y-%m-%dT%H:%M')
+        reserva.diaHoraFim = datetime.strptime(request.POST.get('diaHoraFim'),'%Y-%m-%dT%H:%M')
+        reserva.matSolicitante = Usuario.objects.get(matricula=request.POST.get('matSolicitante'))
+        
+        reserva.save()
+        print('editou!')
+        return HttpResponseRedirect('listar-reservas')
+    else:
+        form = ReservaDiaForm()
+        reserva.diaHoraInicio = reserva.diaHoraInicio.strftime('%Y-%m-%dT%H:%M')
+        reserva.diaHoraFim = reserva.diaHoraFim.strftime('%Y-%m-%dT%H:%M')
+        
+        context = {
+            'form': form,
+            'reserva': reserva
+        }
+        return render(request, 'reserva/editarReservaDia.html', context=context)
+
+def editar_reserva_dia(request, id):
+    reserva = ReservaDiaUnico.objects.get(pk=id)
+    
+    if request.method == 'POST':  
+        reserva.diaHoraInicio = datetime.strptime(request.POST.get('diaHoraInicio'),'%Y-%m-%dT%H:%M')
+        reserva.diaHoraFim = datetime.strptime(request.POST.get('diaHoraFim'),'%Y-%m-%dT%H:%M')
+        reserva.matSolicitante = Usuario.objects.get(matricula=request.POST.get('matSolicitante'))
+        
+        reserva.save()
+        print('editou!')
+        return HttpResponseRedirect('listar-reservas')
+    else:
+        form = ReservaDiaForm()
+        reserva.diaHoraInicio = reserva.diaHoraInicio.strftime('%Y-%m-%dT%H:%M')
+        reserva.diaHoraFim = reserva.diaHoraFim.strftime('%Y-%m-%dT%H:%M')
+        
+        context = {
+            'form': form,
+            'reserva': reserva
+        }
+        return render(request, 'reserva/editarReservaDia.html', context=context)
 
 # @require_POST
 @csrf_exempt

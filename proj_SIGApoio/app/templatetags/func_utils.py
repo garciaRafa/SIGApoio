@@ -116,9 +116,11 @@ def linha_tabela(reserva):
     if isinstance(reserva, ReservaDiaUnico):
         tipo = "Dia Único"
         delete_url = reverse('delete_reserva_dia', kwargs={'id': reserva.pk})
+        edit_url = reverse('editar_reserva_dia', kwargs={'id': reserva.pk})
     elif isinstance(reserva, ReservaSemanal):
         tipo = "Semanal"
         delete_url = reverse('delete_reserva_semanal', kwargs={'id': reserva.pk})
+        edit_url = reverse('editar_reserva_semanal', kwargs={'id': reserva.pk})
     else:
         tipo = "undefined"
         
@@ -126,13 +128,13 @@ def linha_tabela(reserva):
 
     result = f"""
         <tr>
-            <td>{reserva.pk}</td>
+            <td scope="row">{reserva.pk}</td>
             <td>{tipo}</td>
             <td>{reserva.local}</td>
             <td>{reserva.matResponsavel.nome}</td>
             <td>
                 <a class='reserva' name='reserva' tipoR='{stipo}' idReserva='{reserva.pk}'><button class="btn btn-primary btn-sm me-1"><i class="bi bi-list-columns-reverse"></i></button></a>
-                <a class='reserva' name='reserva' tipoR='{stipo}' idReserva='{reserva.pk}'><button class="btn btn-primary btn-sm me-1"><i class="bi bi-pencil-fill"></i></button></a>
+                <button class="btn btn-primary btn-sm me-1"><a style="color: white" href="{edit_url}"><i class="bi bi-pencil-fill"></i></a></button>
                 <button id="deletebtn_{stipo}_{reserva.pk}" onClick="openDeleteModal(event)" delete_url={delete_url} class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
             </td>
         </tr>
