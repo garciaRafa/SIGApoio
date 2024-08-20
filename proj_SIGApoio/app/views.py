@@ -481,6 +481,7 @@ def recurso_edit(request, id):
         form = RecursoForm(instance=recurso)
         form.disable_fields_except_funcionando()
     return render(request, 'recurso/editar_recurso.html', {'form': form})
+
 def autenticar_permissao(request, permissao):
     if request.user.is_authenticated is not True:
         return HttpResponse("Você precisa estar logado para acessar esta página.")
