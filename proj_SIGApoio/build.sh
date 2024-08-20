@@ -8,4 +8,3 @@ pip install -r requirements.txt
 # Comandos de gerenciamento do Django
 python manage.py collectstatic --no-input
 python manage.py migrate
-python manage.py createsuperuser --noinput
