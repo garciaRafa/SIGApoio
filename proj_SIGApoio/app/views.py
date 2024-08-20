@@ -2,10 +2,11 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django.views.decorators.http import require_POST, require_GET, require_safe, require_http_methods
 from .forms import LocalForm, RecursoForm, TipoRecursoForm, ReservaForm, ChamadoForm, ReservaDiaForm
 from .models import TipoRecurso, Recurso, Local, ReservaSemanal, ReservaDiaUnico, Usuario, Horario, TipoLocal, Chamado, Emprestimo
-from .bo.horarios import converter_horarios, converter_horarios_dia
+from .bo.horarios import converter_horarios, converter_horarios_dia, converter_horarios_back
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from datetime import datetime, timedelta
@@ -263,22 +264,25 @@ def editar_reserva_semanal(request, id):
     reserva = ReservaSemanal.objects.get(pk=id)
     
     if request.method == 'POST':  
-        reserva.diaHoraInicio = datetime.strptime(request.POST.get('diaHoraInicio'),'%Y-%m-%dT%H:%M')
-        reserva.diaHoraFim = datetime.strptime(request.POST.get('diaHoraFim'),'%Y-%m-%dT%H:%M')
-        reserva.matSolicitante = Usuario.objects.get(matricula=request.POST.get('matSolicitante'))
-        
+        req = request.POST
+        horarios_vetor = converter_horarios(req.getlist('dias'), req.getlist('horarios'))
+        horarios = Horario.objects.filter(id__in=horarios_vetor)
+        reserva.horarios.set(horarios)
+        reserva.matSolicitante = Usuario.objects.get(matricula=req.get('matSolicitante'))
         reserva.save()
-        return HttpResponseRedirect('listar-reservas')
+        
+        return HttpResponseRedirect(reverse('listar-reservas'))
     else:
-        form = ReservaDiaForm()
-        reserva.diaHoraInicio = reserva.diaHoraInicio.strftime('%Y-%m-%dT%H:%M')
-        reserva.diaHoraFim = reserva.diaHoraFim.strftime('%Y-%m-%dT%H:%M')
+        form = ReservaForm()
+        horarios_dias = converter_horarios_back(map(lambda horario: horario['id'], reserva.horarios.values()));
+        reserva.horarios_form = mark_safe(json.dumps(horarios_dias['horarios']))
+        reserva.dias = mark_safe(json.dumps(horarios_dias['dias']))
         
         context = {
             'form': form,
             'reserva': reserva
         }
-        return render(request, 'reserva/editarReservaDia.html', context=context)
+        return render(request, 'reserva/editarReservaSemanal.html', context=context)
 
 def editar_reserva_dia(request, id):
     reserva = ReservaDiaUnico.objects.get(pk=id)
@@ -287,10 +291,9 @@ def editar_reserva_dia(request, id):
         reserva.diaHoraInicio = datetime.strptime(request.POST.get('diaHoraInicio'),'%Y-%m-%dT%H:%M')
         reserva.diaHoraFim = datetime.strptime(request.POST.get('diaHoraFim'),'%Y-%m-%dT%H:%M')
         reserva.matSolicitante = Usuario.objects.get(matricula=request.POST.get('matSolicitante'))
-        
         reserva.save()
-        print('editou!')
-        return HttpResponseRedirect('listar-reservas')
+        
+        return HttpResponseRedirect(reverse('listar-reserva'))
     else:
         form = ReservaDiaForm()
         reserva.diaHoraInicio = reserva.diaHoraInicio.strftime('%Y-%m-%dT%H:%M')
@@ -319,9 +322,10 @@ def get_locais(request):
         Q(nome__in=locais_ocupados)
     )
     locais_final = locais.filter(
-        capacidade__gt=pessoas,
+        capacidade__gte=pessoas,
         bloco=bloco
     )
+    print(locais_final)
     context = {'locais':locais_final}
     return render(request, 'reserva/local_option.html', context)
 
