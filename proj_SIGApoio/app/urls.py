@@ -26,5 +26,5 @@ urlpatterns = [
     path('get_locais_dia/', get_locais_dia, name = "getLocaisDia"),
     path('usuarios/', include('django.contrib.auth.urls')),
     path('usuarios/logout/', LogoutView.as_view(next_page='login'), name='logout'),
-    path('usuarios/registration_form/', cadastro_usuario, name="cadastro_usuario")
+    path('usuarios/registration_form/', cadastro_usuario, name="cadastro_usuario"),
 ]
