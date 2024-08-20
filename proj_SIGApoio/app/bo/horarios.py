@@ -10,6 +10,22 @@ def converter_horarios(dias, horarios):
             horarios_final.append(dia + horario)
     return horarios_final
     
+def converter_horarios_back(horarios):
+    '''Converte 1 vetor de strings, com os horários e seus respectivos códigos, em 2 vetores: dias e horarios'''
+    horarios_final = []
+    dias_final = []
+    for horario in horarios:
+        dia = horario[0]
+        if dia not in dias_final:
+            dias_final.append(dia)
+            
+        horario_obj = horario[1:]
+        if horario_obj not in horarios_final:
+            horarios_final.append(horario_obj)
+    
+    return {'horarios': horarios_final, 'dias': dias_final}
+            
+
 def converter_horarios_dia(data_inicio, data_final):
     '''Recebe duas datas e retorna os horarios entre elas.'''
     dia_hora_inicio = datetime.strptime(data_inicio, '%Y-%m-%dT%H:%M')    

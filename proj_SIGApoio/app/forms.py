@@ -11,14 +11,13 @@ BLOCOS_CHOICES = [('A', 'Bloco A'), ('B', 'Bloco B'), ('C', 'Bloco C'), ('D', 'B
 def get_usuario_choices():
     try:
         if 'app_usuario' in connection.introspection.table_names():
-            print('achou usuário')
             return [(usuario.matricula, usuario.nome) for usuario in Usuario.objects.all()]
         else:
+            print(f'Sem usuários cadastrados.')
             return []
-            print('nao achou usuário')
         
     except Exception as e:
-        print('deu erro')
+        print(f'Erro: {e.message} (app/forms.py 20)')
         return []
     
 class TipoRecursoForm(forms.Form, forms.ModelForm):

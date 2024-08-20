@@ -268,7 +268,6 @@ def editar_reserva_semanal(request, id):
         reserva.matSolicitante = Usuario.objects.get(matricula=request.POST.get('matSolicitante'))
         
         reserva.save()
-        print('editou!')
         return HttpResponseRedirect('listar-reservas')
     else:
         form = ReservaDiaForm()
