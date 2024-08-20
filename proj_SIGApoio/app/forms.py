@@ -56,6 +56,16 @@ class RecursoForm(forms.Form, forms.ModelForm):
     class Meta:
         model = Recurso
         fields = ['codigo','tipo', 'status', 'funcionando']  
+    
+    def disable_fields_except_funcionando(self):
+        self.fields['codigo'].disabled = True
+        self.fields['tipo'].disabled = True
+        self.fields['status'].disabled = True
+
+        self.fields['codigo'].required = False
+        self.fields['tipo'].required = False
+
+        self.fields['funcionando'].disabled = False
 
 class ChamadoForm(forms.Form, forms.ModelForm):
     chamado = forms.CharField(
