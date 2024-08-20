@@ -1,4 +1,5 @@
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.http import require_POST, require_GET, require_safe, require_http_methods
@@ -10,14 +11,15 @@ from django.db.models import Q
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 import json
-from django.views.decorators.http import require_POST, require_GET, require_safe, require_http_methods
+from django.contrib import messages
 
 # @require_GET
 def home(request):
     return render(request,'index.html')  
 
-#@require_http_methods(['GET','POST'])
+
 # @require_POST
+@login_required(login_url='/usuarios/login/')
 def cad_local(request):
     if request.method == 'POST':
         form = LocalForm(request.POST)
@@ -29,13 +31,13 @@ def cad_local(request):
     return render(request, 'local/cad_local.html', {'form': form})
 
 
-@require_safe
+# @require_GET
 def success_page(request):
     return render(request, 'local/success_page.html')
 
-# @require_http_methods(['GET','POST'])
 # @require_POST
-def cadastroRecurso(request):
+@login_required(login_url='/usuarios/login/')
+def cadastro_recurso(request):
     if request.method != 'POST':
         form = RecursoForm()
     else:
@@ -48,14 +50,15 @@ def cadastroRecurso(request):
             
         if form.is_valid():
             form.save()
+            messages.success(request, 'Recurso cadastrado com sucesso!')
             return HttpResponseRedirect(reverse('cadastro-recurso'))
         
     context = {'form': form}
     return render(request, 'recurso/cadastro_recurso.html', context)
 
-#@require_http_methods(['GET','POST'])
 # @require_POST
-def cadastroTipoRecurso(request):
+@login_required(login_url='/usuarios/login/')
+def cadastro_tipo_recurso(request):
     if request.method != 'POST':
         form = TipoRecursoForm()
     else:
@@ -67,11 +70,14 @@ def cadastroTipoRecurso(request):
                    
         if form.is_valid():
             form.save()
+            messages.success(request, 'Tipo de recurso cadastrado com sucesso!')
             return redirect('cadastro-tipo-recurso')
             
     context = {'form':form}
     return render(request, 'recurso/cadastro_tipo_recurso.html', context)
 
+# @require_POST
+@login_required(login_url='/usuarios/login/')
 def reserva_recurso(request):
     tipos_recursos = TipoRecurso.objects.all()
     
@@ -79,13 +85,14 @@ def reserva_recurso(request):
         reserva_form = ReservaForm(request.POST)
         if reserva_form.is_valid():
             reserva_form.save()
-            return redirect('success_page')  # Ajuste o redirecionamento conforme necessário
+            return redirect('success_page') 
     else:
         reserva_form = ReservaForm()
 
     return render(request, 'recurso/reserva_recurso.html', {'reserva_form': reserva_form, 'tipos_recursos': tipos_recursos})
 
-
+# @require_GET
+@login_required(login_url='/usuarios/login/')
 def listar_emprestimos(request):
     status = request.GET.get('status')
     usuario = request.GET.get('usuario')
@@ -114,7 +121,8 @@ def listar_emprestimos(request):
 
     return render(request, 'emprestimos/lista_emprestimos.html', context)
 
- 
+# @require_GET
+@login_required(login_url='/usuarios/login/')
 def listar_local(request):
     locais = Local.objects.all()
     tipo = request.GET.get('tipo')
@@ -141,20 +149,26 @@ def listar_local(request):
     }
     return render(request, 'local/listar_local.html', context)
 
-def listarRecursos(request):
+# @require_GET
+@login_required(login_url='/usuarios/login/')
+def listar_recursos(request):
     recursos = Recurso.objects.all()
-    recursosDisponiveis = Recurso.objects.filter(status=True)
-    recursosIndisponiveis = Recurso.objects.filter(status=False)
-    recursosFunciona = Recurso.objects.filter(funcionando=True)
-    recursosNaoFunciona = Recurso.objects.filter(funcionando=False)
+    recursos_disponiveis = Recurso.objects.filter(status=True)
+    recursos_indisponiveis = Recurso.objects.filter(status=False)
+    recursos_funciona = Recurso.objects.filter(funcionando=True)
+    recursos_nao_funciona = Recurso.objects.filter(funcionando=False)
     tipos = TipoRecurso.objects.all()
-    context = {'recursos':recursos, 'tipos':tipos, 'recursosDisponiveis':recursosDisponiveis, 'recursosIndisponiveis':recursosIndisponiveis, 'recursosNaoFunciona':recursosNaoFunciona, 'recursosFunciona':recursosFunciona}
+    context = {'recursos':recursos, 'tipos':tipos, 'recursosDisponiveis':recursos_disponiveis, 'recursosIndisponiveis':recursos_indisponiveis, 'recursosNaoFunciona':recursos_nao_funciona, 'recursosFunciona':recursos_funciona}
     return render(request, 'recurso/listar_recurso.html', context)
 
-def tipoReserva(request):
+# @require_GET
+@login_required(login_url='/usuarios/login/')
+def tipo_reserva(request):
     return render(request, 'reserva/tipoReserva.html')
 
-def cadastroReservaSemanal(request):
+# @require_POST
+@login_required(login_url='/usuarios/login/')
+def cadastro_reserva_semanal(request):
     if request.method != 'POST':
         form = ReservaForm()
         context = {'form': form}
@@ -171,15 +185,17 @@ def cadastroReservaSemanal(request):
             local = Local.objects.get(id=req['local'])
             horarios_vetor = converter_horarios(req.getlist('dias'), req.getlist('horarios')) # Junta os dias e horarios
             horarios = Horario.objects.filter(id__in=horarios_vetor)
-            novaReserva = ReservaSemanal.objects.create(descricao=descricao, local=local, matResponsavel=resp, matSolicitante=solic)
-            novaReserva.horarios.set(horarios)
-            novaReserva.save()
+            nova_reserva = ReservaSemanal.objects.create(descricao=descricao, local=local, matResponsavel=resp, matSolicitante=solic)
+            nova_reserva.horarios.set(horarios)
+            nova_reserva.save()
             return render(request, 'reserva/cadastroReserva.html', context)
         except:
             context = {'form': form, 'message': 'Erro no cadastro da reserva', 'error': True}
             return render(request, 'reserva/cadastroReserva.html', context)
     
-def cadastroReservaDia(request):
+# @require_POST
+@login_required(login_url='/usuarios/login/')
+def cadastro_reserva_dia(request):
     if request.method != 'POST':
         form = ReservaDiaForm()
         context = {'form': form }
@@ -198,33 +214,33 @@ def cadastroReservaDia(request):
             data_fim = datetime.strptime(req['diaHoraFim'], '%Y-%m-%dT%H:%M')
             repeticao  = req['repeticao']
             if repeticao == 'unico':
-                novaReserva = ReservaDiaUnico.objects.create(descricao=descricao,
+                nova_reserva = ReservaDiaUnico.objects.create(descricao=descricao,
                                                          local=local, 
                                                          diaHoraInicio=data_inicio, 
                                                          diaHoraFim=data_fim,
                                                          matResponsavel=resp, 
                                                          matSolicitante=solic)
-                novaReserva.save()
+                nova_reserva.save()
             elif repeticao == 'semana':
                 while data_inicio.year == datetime.now().year:
-                    novaReserva = ReservaDiaUnico.objects.create(descricao=descricao,
+                    nova_reserva = ReservaDiaUnico.objects.create(descricao=descricao,
                                                          local=local, 
                                                          diaHoraInicio=data_inicio, 
                                                          diaHoraFim=data_fim,
                                                          matResponsavel=resp, 
                                                          matSolicitante=solic)
-                    novaReserva.save()
+                    nova_reserva.save()
                     data_inicio = data_inicio + timedelta(weeks=1)  # Pula uma semana
                     data_fim = data_fim + timedelta(weeks=1)
             elif repeticao == 'mes':
                 while data_inicio.year == datetime.now().year:
-                    novaReserva = ReservaDiaUnico.objects.create(descricao=descricao,
+                    nova_reserva = ReservaDiaUnico.objects.create(descricao=descricao,
                                                          local=local, 
                                                          diaHoraInicio=data_inicio, 
                                                          diaHoraFim=data_fim,
                                                          matResponsavel=resp, 
                                                          matSolicitante=solic)
-                    novaReserva.save()
+                    nova_reserva.save()
                     data_inicio = data_inicio + relativedelta(months=1)  # Pula um mês
                     data_fim = data_fim + relativedelta(months=1)
             
@@ -236,7 +252,7 @@ def cadastroReservaDia(request):
       
 # @require_POST
 @csrf_exempt
-def getLocais(request):
+def get_locais(request):
     data = json.loads(request.body)
     horarios = data['horarios']
     dias = data['dias']
@@ -257,12 +273,14 @@ def getLocais(request):
     context = {'locais':locais_final}
     return render(request, 'reserva/local_option.html', context)
 
-def efetuarChamado(request):
+# @require_POST
+@login_required(login_url='/usuarios/login/')
+def efetuar_chamado(request):
     if request.method != 'POST':
         form = ChamadoForm()
     else:
         form = ChamadoForm(request.POST)
-        print(form)
+        #print(form)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('efetuar-chamado'))
@@ -270,8 +288,9 @@ def efetuarChamado(request):
     context = {'form': form}
     return render(request, 'reserva/efetuar_chamado.html', context)
 
-
-def listarReservas(request):
+# @require_GET
+@login_required(login_url='/usuarios/login/')
+def listar_reservas(request):
     filtro_tipo='default'
 
     try:
@@ -283,23 +302,26 @@ def listarReservas(request):
 
     return render(request, "reserva/listar_reservas.html", context)
 
-def filtrosReserva(request):
+# @require_GET
+def filtros_reserva(request):
     filtro = request.GET.get('filtro')
     context = {'filtro': filtro}
 
     return render(request, "reserva/filtros_reserva.html", context)
 
-def filtrarReservas(request):
+# @require_GET
+
+def filtrar_reservas(request):
     filtro_tipo = request.GET.get('filtro_tipo')
     filtro_local = request.GET.get('filtro_local')
     filtro_resp = request.GET.get('filtro_resp')
-    reservasS = ReservaSemanal.objects.all()
-    reservasD = ReservaDiaUnico.objects.all()
+    reservas_s = ReservaSemanal.objects.all()
+    reservas_d = ReservaDiaUnico.objects.all()
 
     reservas = []
-    for res in reservasD:
+    for res in reservas_d:
         reservas.append(res)
-    for res in reservasS:
+    for res in reservas_s:
         reservas.append(res)
 
     context = {"reservas": reservas,
@@ -309,8 +331,11 @@ def filtrarReservas(request):
 
     return render(request, "reserva/lista_filtrada.html", context)
 
+# @require_GET
 @csrf_exempt
-def reservaDetails(request):
+def reserva_details(request):
+    reserva_detail = None
+    
     reserva_pk = request.GET.get('reserva_pk')
     reserva_tipo = request.GET.get('reserva_tipo')
 
@@ -325,7 +350,7 @@ def reservaDetails(request):
 
 # @require_POST
 @csrf_exempt
-def getLocaisDia(request):
+def get_locais_dia(request):
     data = json.loads(request.body)
     dia = data['diaInicio']
     diaFim = data['diaFim']
@@ -357,3 +382,22 @@ def getLocaisDia(request):
     context = {'locais':locais_final}
     return render(request, 'reserva/local_option.html', context)
 
+def recurso_delete(request, id):
+    recurso = Recurso.objects.get(pk=id)
+    recurso.delete()
+    messages.success(request, 'Recurso excluído com sucesso!')
+    return redirect('listar-recurso')
+
+def recurso_edit(request, id):
+    recurso = Recurso.objects.get(pk=id)
+    if request.method == 'POST':
+        form = RecursoForm(request.POST, instance=recurso)
+        form.disable_fields_except_funcionando()
+        if form.is_valid():
+            Recurso.objects.filter(pk=id).update(funcionando=form.cleaned_data['funcionando'])
+            messages.success(request, 'Recurso editado com sucesso!')
+            return redirect('listar-recurso')
+    else:
+        form = RecursoForm(instance=recurso)
+        form.disable_fields_except_funcionando()
+    return render(request, 'recurso/editar_recurso.html', {'form': form})

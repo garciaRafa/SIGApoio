@@ -2,20 +2,20 @@ from django import forms
 from django.db import connection
 from .models import Recurso, TipoRecurso, Local, TipoLocal, Usuario, ReservaSemanal, ReservaDiaUnico, Chamado
 
+color = 'color: black'
+class_style_1 = 'form-select gray-back blue-text me-4'
+class_style_2 = 'form-control blue-text gray-back me-4'
 
 BLOCOS_CHOICES = [('A', 'Bloco A'), ('B', 'Bloco B'), ('C', 'Bloco C'), ('D', 'Bloco D'), ('Aud', 'Auditórios'), ('Lab', 'Laboratórios')]
 
 def get_usuario_choices():
     try:
         if 'app_usuario' in connection.introspection.table_names():
-            print('achou usuário')
             return [(usuario.matricula, usuario.nome) for usuario in Usuario.objects.all()]
         else:
             return []
-            print('nao achou usuário')
         
-    except Exception as e:
-        print('deu erro')
+    except Exception:
         return []
     
 class TipoRecursoForm(forms.Form, forms.ModelForm):
@@ -37,22 +37,26 @@ class RecursoForm(forms.Form, forms.ModelForm):
     tipo = forms.ModelChoiceField(
         queryset=TipoRecurso.objects.all(),
         label='Tipo',
-        widget=forms.Select(attrs={'class':'form-control', 'style':'color: black'})
-    )
-
-    status = forms.ChoiceField(
-        choices=Recurso.STATUS_CHOICE,
-        widget=forms.Select(attrs={'class':'form-control', 'style':'color: black'})
+        widget=forms.Select(attrs={'class':'form-control', 'style':color})
     )
 
     funcionando = forms.ChoiceField(
         choices=Recurso.FUNCIONANDO_CHOICE,
-        widget=forms.Select(attrs={'class':'form-control', 'style':'color: black'})
+        widget=forms.Select(attrs={'class':'form-control', 'style':color})
     )
 
     class Meta:
         model = Recurso
-        fields = ['codigo','tipo', 'status', 'funcionando']  
+        fields = ['codigo','tipo', 'funcionando']  
+    
+    def disable_fields_except_funcionando(self):
+        self.fields['codigo'].disabled = True
+        self.fields['tipo'].disabled = True
+
+        self.fields['codigo'].required = False
+        self.fields['tipo'].required = False
+
+        self.fields['funcionando'].disabled = False
 
 class ChamadoForm(forms.Form, forms.ModelForm):
     chamado = forms.CharField(
@@ -65,7 +69,7 @@ class ChamadoForm(forms.Form, forms.ModelForm):
         label='Reserva',
         widget=forms.Select(
             attrs={
-                'class': 'form-select gray-back blue-text me-4'
+                'class': 'class_style_1'
             }
         )
     )
@@ -78,7 +82,7 @@ class LocalForm(forms.ModelForm):
     tipo = forms.ModelChoiceField(
         queryset=TipoLocal.objects.all(),
         label='Tipo de Local',
-        widget=forms.Select(attrs={'class': 'form-control', 'style': 'color: black'})
+        widget=forms.Select(attrs={'class': 'form-control', 'style': color})
     )
 
     class Meta:
@@ -89,7 +93,7 @@ class ReservaForm(forms.ModelForm, forms.Form):
     descricao = forms.CharField(
         label='Descrição',
         widget=forms.TextInput(
-            attrs={'class': 'form-control blue-text gray-back me-4'}
+            attrs={'class': class_style_2}
         )
     )
     
@@ -102,7 +106,7 @@ class ReservaForm(forms.ModelForm, forms.Form):
         ],
         widget=forms.SelectMultiple(
             attrs={
-                'class': 'form-select gray-back blue-text me-4'
+                'class': class_style_1
             }
         )
     )
@@ -118,7 +122,7 @@ class ReservaForm(forms.ModelForm, forms.Form):
         ],
         widget=forms.SelectMultiple(
             attrs={
-                'class': 'form-select gray-back blue-text me-4'
+                'class': class_style_1
             }
         )
     )
@@ -137,7 +141,7 @@ class ReservaForm(forms.ModelForm, forms.Form):
         choices=BLOCOS_CHOICES,
         widget=forms.Select(
             attrs={
-                'class': 'form-select gray-back blue-text me-4'
+                'class': class_style_1
             }
         )
     )
@@ -147,7 +151,7 @@ class ReservaForm(forms.ModelForm, forms.Form):
         choices=get_usuario_choices(),
         widget=forms.Select(
             attrs={
-                'class': 'form-select gray-back blue-text me-4'
+                'class': class_style_1
             }
         )
     )    
@@ -156,7 +160,7 @@ class ReservaForm(forms.ModelForm, forms.Form):
         label="Local",
         widget=forms.Select(
             attrs={
-                'class': 'form-select gray-back blue-text me-4'
+                'class': class_style_1
             }
         )
     )
@@ -173,9 +177,8 @@ class ReservaForm(forms.ModelForm, forms.Form):
             try:
                 self.fields['local'].queryset = \
                     Local.objects.all().order_by('nome')
-                print(self.fields['local'].queryset)
             except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty Horarios queryset
+                pass 
         elif self.instance.pk:
             self.fields['local'].queryset = Local.objects.none()
 
@@ -183,7 +186,7 @@ class ReservaDiaForm(forms.ModelForm, forms.Form):
     descricao = forms.CharField(
         label='Descrição',
         widget=forms.TextInput(
-            attrs={'class': 'form-control blue-text gray-back me-4'}
+            attrs={'class': class_style_2}
         )
     )
     
@@ -197,14 +200,14 @@ class ReservaDiaForm(forms.ModelForm, forms.Form):
     diaHoraInicio = forms.DateTimeField(
         label="Início da reserva",
         widget=forms.DateTimeInput(
-            attrs={'class': 'form-control blue-text gray-back me-4', 'type': 'datetime-local'}
+            attrs={'class': class_style_2, 'type': 'datetime-local'}
         )
     )
     
     diaHoraFim = forms.DateTimeField(
         label="Fim da reserva",
         widget=forms.DateTimeInput(
-            attrs={'class': 'form-control blue-text gray-back me-4', 'type': 'datetime-local'}
+            attrs={'class': class_style_2, 'type': 'datetime-local'}
         )
     )
     
@@ -212,7 +215,7 @@ class ReservaDiaForm(forms.ModelForm, forms.Form):
         choices=[('unico', 'Única'), ('semana', 'Semanal'), ('mes', 'Mensal')],
         widget=forms.Select(
             attrs={
-                'class': 'form-select gray-back blue-text me-4'
+                'class': class_style_1
             },
         )
     )
@@ -231,7 +234,7 @@ class ReservaDiaForm(forms.ModelForm, forms.Form):
         choices=BLOCOS_CHOICES,
         widget=forms.Select(
             attrs={
-                'class': 'form-select gray-back blue-text me-4'
+                'class': class_style_1
             }
         )
     )

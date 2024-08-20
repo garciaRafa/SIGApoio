@@ -10,42 +10,42 @@ def converter_horarios(dias, horarios):
             horarios_final.append(dia + horario)
     return horarios_final
     
-def converter_horarios_dia(dataInicio, dataFinal):
+def converter_horarios_dia(data_inicio, data_final):
     '''Recebe duas datas e retorna os horarios entre elas.'''
-    diaHoraInicio = datetime.strptime(dataInicio, '%Y-%m-%dT%H:%M')    
-    diaHoraFinal = datetime.strptime(dataFinal, '%Y-%m-%dT%H:%M')
+    dia_hora_inicio = datetime.strptime(data_inicio, '%Y-%m-%dT%H:%M')    
+    dia_hora_final = datetime.strptime(data_final, '%Y-%m-%dT%H:%M')
     
-    diaSemanaInicio = diaHoraInicio.weekday() ## 0 - Segunda, 6 - domingo
-    diaSemanaFinal = diaHoraFinal.weekday()
+    dia_semana_inicio = dia_hora_inicio.weekday() ## 0 - Segunda, 6 - domingo
+    dia_semana_final = dia_hora_final.weekday()
     
-    if diaSemanaInicio == 6:
-        diaSemanaInicio = 0 ## domingo = 0
+    if dia_semana_inicio == 6:
+        dia_semana_inicio = 0 
     else:
-        diaSemanaInicio = diaSemanaInicio + 1 ## segunda = 1 e assim em diante
+        dia_semana_inicio = dia_semana_inicio + 1 ## segunda = 1 e assim em diante
     
-    if diaSemanaFinal == 6:
-        diaSemanaFinal = 0 
+    if dia_semana_final == 6:
+        dia_semana_final = 0 
     else:
-        diaSemanaFinal = diaSemanaFinal + 1
+        dia_semana_final = dia_semana_final + 1
         
-    if diaSemanaInicio in [6, 0] and diaSemanaFinal in [6, 0]: ## se começar e terminar no fim de semana, retorna None
+    if dia_semana_inicio in [6, 0] and dia_semana_final in [6, 0]: ## se começar e terminar no fim de semana, retorna None
         return None
     
-    horarioInicio = getHorarioAt(diaSemanaInicio, f'{diaHoraInicio.hour:02d}:{diaHoraInicio.minute:02d}', True)
-    horarioFinal = getHorarioAt(diaSemanaFinal, f'{diaHoraFinal.hour:02d}:{diaHoraFinal.minute:02d}', False)
+    horario_inicio = get_horario_at(dia_semana_inicio, f'{dia_hora_inicio.hour:02d}:{dia_hora_inicio.minute:02d}', True)
+    horario_final = get_horario_at(dia_semana_final, f'{dia_hora_final.hour:02d}:{dia_hora_final.minute:02d}', False)
     
-    horarios_final = getHorariosBetween(horarioInicio, horarioFinal)
+    horarios_final = get_horarios_between(horario_inicio, horario_final)
     return horarios_final
     
-def getHorarioAt(diaSemana, hora, inicio):
-    if diaSemana in [6, 0] and inicio: ## se começar no final de semana, pula pra segunda
-        diaSemana = 1
-    elif diaSemana in [6, 0] and not inicio: ## se terminar no final de semana, antecipa pra sexta
-        diaSemana = 5
+def get_horario_at(dia_semana, hora, inicio):
+    if dia_semana in [6, 0] and inicio: ## se começar no final de semana, pula pra segunda
+        dia_semana = 1
+    elif dia_semana in [6, 0] and not inicio: ## se terminar no final de semana, antecipa pra sexta
+        dia_semana = 5
         
     hora_obj = time.fromisoformat(hora)
     horarios = Horario.objects.filter(
-        dia=diaSemana,
+        dia=dia_semana,
         horaInicio__lte=hora_obj, 
         horaFim__gte=hora_obj
     )
@@ -54,16 +54,16 @@ def getHorarioAt(diaSemana, hora, inicio):
         return horario
     else:
         horario = Horario.objects.filter(
-            dia=diaSemana,
+            dia=dia_semana,
             horaInicio__gt=hora_obj
         ).order_by('horaInicio').first()
         return horario
     
-def getHorariosBetween(horarioInicio, horarioFinal):
-    dia_inicio = horarioInicio.dia
-    dia_fim = horarioFinal.dia
-    hora_inicio = horarioInicio.horaInicio
-    hora_fim = horarioFinal.horaFim
+def get_horarios_between(horario_inicio, horario_final):
+    dia_inicio = horario_inicio.dia
+    dia_fim = horario_final.dia
+    hora_inicio = horario_inicio.horaInicio
+    hora_fim = horario_final.horaFim
     
     if dia_inicio == dia_fim:
         horarios = Horario.objects.filter(
