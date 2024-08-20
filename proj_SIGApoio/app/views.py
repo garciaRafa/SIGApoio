@@ -50,6 +50,7 @@ def cadastro_recurso(request):
             
         if form.is_valid():
             form.save()
+            messages.success(request, 'Recurso cadastrado com sucesso!')
             return HttpResponseRedirect(reverse('cadastro-recurso'))
         
     context = {'form': form}
@@ -69,6 +70,7 @@ def cadastro_tipo_recurso(request):
                    
         if form.is_valid():
             form.save()
+            messages.success(request, 'Tipo de recurso cadastrado com sucesso!')
             return redirect('cadastro-tipo-recurso')
             
     context = {'form':form}
@@ -383,6 +385,7 @@ def get_locais_dia(request):
 def recurso_delete(request, id):
     recurso = Recurso.objects.get(pk=id)
     recurso.delete()
+    messages.success(request, 'Recurso excluído com sucesso!')
     return redirect('listar-recurso')
 
 def recurso_edit(request, id):
