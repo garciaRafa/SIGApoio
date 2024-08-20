@@ -1,4 +1,4 @@
-from .views import efetuar_chamado, home, get_locais, cadastro_recurso, cad_local, listar_local, success_page, cadastro_tipo_recurso, listar_recursos, cadastro_reserva_semanal, tipo_reserva, cadastro_reserva_dia, reserva_recurso, listar_reservas, reserva_details, filtrar_reservas, filtros_reserva, get_locais_dia, listar_emprestimos, cadastro_usuario
+from .views import efetuar_chamado, home, get_locais, cadastro_recurso, cad_local, listar_local, success_page, cadastro_tipo_recurso, listar_recursos, cadastro_reserva_semanal, tipo_reserva, cadastro_reserva_dia, reserva_recurso, listar_reservas, reserva_details, filtrar_reservas, filtros_reserva, get_locais_dia, listar_emprestimos, cadastro_usuario, recurso_delete, recurso_edit
 from django.urls import path, include
 from django.contrib.auth.views import LogoutView 
 
@@ -27,4 +27,6 @@ urlpatterns = [
     path('usuarios/', include('django.contrib.auth.urls')),
     path('usuarios/logout/', LogoutView.as_view(next_page='login'), name='logout'),
     path('usuarios/registration_form/', cadastro_usuario, name="cadastro_usuario"),
+    path('recurso/delete/<int:id>/', recurso_delete, name='rec_delete'),
+    path('recurso/edit/<int:id>/', recurso_edit, name='rec_edit')
 ]
