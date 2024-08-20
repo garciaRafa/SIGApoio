@@ -1,7 +1,9 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, permission_required
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.models import User
+from rolepermissions.decorators import has_role_decorator, has_permission_decorator
+from rolepermissions.checkers import has_permission
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_django
 from django.urls import reverse
@@ -13,6 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
+from rolepermissions.roles import assign_role
 import json
 
 # @require_GET
@@ -29,8 +32,9 @@ from django.shortcuts import redirect, render
 
 
 
-
 def cadastro_usuario(request):
+    if autenticar_permissao(request,'cadastrar_usuario') is not True:
+        return autenticar_permissao(request,'cadastrar_usuario')
     if request.method == "GET":
         return render(request, 'registration/registration_form.html')
     else:
@@ -50,12 +54,12 @@ def cadastro_usuario(request):
         if confirma_senha != senha:
             return HttpResponse("As senhas não coincidem")
         if confirma_email != email_cad:
-            print(email_cad, confirma_email)
             return HttpResponse("E-mails diferentes")
         else:
             user = User.objects.create_user(username= username, email=email_cad, password=senha)
             user.save()
-            return HttpResponseRedirect(reverse('login'))
+            assign_role(user,'bolsista')
+            return HttpResponseRedirect(reverse('home'))
             
 def login(request):
     if request.method== "GET":
@@ -73,22 +77,13 @@ def login(request):
             return HttpResponse('Não tá autenticado')
 
                 
-    # form = cad_user(request.POST or None)
-    # if request.method == 'POST':
-    #     if form.is_valid():
-    #         user = form.save()
-    #         return redirect('login')
-    # return render(request, template_name)
-
-
-
 
 
 
 # @require_POST
-@login_required(login_url='/usuarios/login/')
-@permission_required('cadastrorecurso')
 def cad_local(request):
+    if autenticar_permissao(request,'cadastrar_local') is not True:
+        return autenticar_permissao(request,'cadastrar_local')
     if request.method == 'POST':
         form = LocalForm(request.POST)
         if form.is_valid():
@@ -104,8 +99,9 @@ def success_page(request):
     return render(request, 'local/success_page.html')
 
 # @require_POST
-@login_required(login_url='/usuarios/login/')
 def cadastro_recurso(request):
+    if autenticar_permissao(request,'cadastrar_recurso') is not True:
+        return autenticar_permissao(request,'cadastrar_recurso')
     if request.method != 'POST':
         form = RecursoForm()
     else:
@@ -124,8 +120,10 @@ def cadastro_recurso(request):
     return render(request, 'recurso/cadastro_recurso.html', context)
 
 # @require_POST
-@login_required(login_url='/usuarios/login/')
+
 def cadastro_tipo_recurso(request):
+    if autenticar_permissao(request,'cadastrar_tipo_recurso') is not True:
+        return autenticar_permissao(request,'cadastrar_tipo_recurso')
     if request.method != 'POST':
         form = TipoRecursoForm()
     else:
@@ -134,7 +132,7 @@ def cadastro_tipo_recurso(request):
             if str(i).lower() == form.data['tipo'].lower():
                 context = {'erro':'Tipo de recurso já cadastrado','form':form}
                 return render(request, 'recurso/cadastro_tipo_recurso.html', context)
-                   
+                
         if form.is_valid():
             form.save()
             return redirect('cadastro-tipo-recurso')
@@ -143,8 +141,11 @@ def cadastro_tipo_recurso(request):
     return render(request, 'recurso/cadastro_tipo_recurso.html', context)
 
 # @require_POST
-@login_required(login_url='/usuarios/login/')
+
+
 def reserva_recurso(request):
+    if autenticar_permissao(request,'reservar_recurso') is not True:
+        return autenticar_permissao(request,'reservar_recurso')
     tipos_recursos = TipoRecurso.objects.all()
     
     if request.method == 'POST':
@@ -158,8 +159,9 @@ def reserva_recurso(request):
     return render(request, 'recurso/reserva_recurso.html', {'reserva_form': reserva_form, 'tipos_recursos': tipos_recursos})
 
 # @require_GET
-@login_required(login_url='/usuarios/login/')
 def listar_emprestimos(request):
+    if autenticar_permissao(request,'listar_emprestimos') is not True:
+        return autenticar_permissao(request,'listar_emprestimos')
     status = request.GET.get('status')
     usuario = request.GET.get('usuario')
     solicitante = request.GET.get('solicitante')
@@ -188,8 +190,9 @@ def listar_emprestimos(request):
     return render(request, 'emprestimos/lista_emprestimos.html', context)
 
 # @require_GET
-@login_required(login_url='/usuarios/login/')
 def listar_local(request):
+    if autenticar_permissao(request,'listar_local') is not True:
+        return autenticar_permissao(request,'listar_local')
     locais = Local.objects.all()
     tipo = request.GET.get('tipo')
     bloco = request.GET.get('bloco')
@@ -216,8 +219,10 @@ def listar_local(request):
     return render(request, 'local/listar_local.html', context)
 
 # @require_GET
-@login_required(login_url='/usuarios/login/')
+
 def listar_recursos(request):
+    if autenticar_permissao(request,'listar_recursos') is not True:
+        return autenticar_permissao(request,'listar_recursos')
     recursos = Recurso.objects.all()
     recursos_disponiveis = Recurso.objects.filter(status=True)
     recursos_indisponiveis = Recurso.objects.filter(status=False)
@@ -228,13 +233,13 @@ def listar_recursos(request):
     return render(request, 'recurso/listar_recurso.html', context)
 
 # @require_GET
-@login_required(login_url='/usuarios/login/')
 def tipo_reserva(request):
     return render(request, 'reserva/tipoReserva.html')
 
 # @require_POST
-@login_required(login_url='/usuarios/login/')
 def cadastro_reserva_semanal(request):
+    if autenticar_permissao(request,'cadastro_reserva_semanal') is not True:
+        return autenticar_permissao(request,'cadastro_reserva_semanal')
     if request.method != 'POST':
         form = ReservaForm()
         context = {'form': form}
@@ -260,8 +265,10 @@ def cadastro_reserva_semanal(request):
             return render(request, 'reserva/cadastroReserva.html', context)
     
 # @require_POST
-@login_required(login_url='/usuarios/login/')
+
 def cadastro_reserva_dia(request):
+    if autenticar_permissao(request,'cadastro_reserva_dia') is not True:
+        return autenticar_permissao(request,'cadastro_reserva_dia')
     if request.method != 'POST':
         form = ReservaDiaForm()
         context = {'form': form }
@@ -340,8 +347,9 @@ def get_locais(request):
     return render(request, 'reserva/local_option.html', context)
 
 # @require_POST
-@login_required(login_url='/usuarios/login/')
 def efetuar_chamado(request):
+    if autenticar_permissao(request,'efetuar_chamados') is not True:
+        return autenticar_permissao(request,'efetuar_chamados')
     if request.method != 'POST':
         form = ChamadoForm()
     else:
@@ -355,8 +363,9 @@ def efetuar_chamado(request):
     return render(request, 'reserva/efetuar_chamado.html', context)
 
 # @require_GET
-@login_required(login_url='/usuarios/login/')
 def listar_reservas(request):
+    if autenticar_permissao(request,'listar_reservas') is not True:
+        return autenticar_permissao(request,'listar_reservas')
     filtro_tipo='default'
 
     try:
@@ -448,3 +457,9 @@ def get_locais_dia(request):
     context = {'locais':locais_final}
     return render(request, 'reserva/local_option.html', context)
 
+def autenticar_permissao(request, permissao):
+    if request.user.is_authenticated is not True:
+        return HttpResponse("Você precisa estar logado para acessar esta página.")
+    if has_permission(request.user, permissao) is not True:
+        return HttpResponse("Seu usuário não tem permissão de acessar essa página")
+    return True
