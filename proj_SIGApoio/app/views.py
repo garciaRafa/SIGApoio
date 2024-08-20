@@ -43,6 +43,8 @@ def cadastro_usuario(request):
         confirma_email= request.POST.get('confirm_email')
         senha = request.POST.get ('password')
         confirma_senha = request.POST.get ('confirm_password') 
+        tipo_usuario = request.POST.get ('tipo_usuario')
+        print(tipo_usuario)
         
         user = User.objects.filter(username=username).first()
         email = User.objects.filter(email=email_cad).first()
@@ -58,7 +60,7 @@ def cadastro_usuario(request):
         else:
             user = User.objects.create_user(username= username, email=email_cad, password=senha)
             user.save()
-            assign_role(user,'bolsista')
+            assign_role(user,tipo_usuario)
             return HttpResponseRedirect(reverse('home'))
             
 def login(request):

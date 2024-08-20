@@ -14,6 +14,14 @@
     <br>
     <input type="password" placeholder="Digite sua Senha" name="password">
     <input type="password" placeholder="Confirme sua senha" name="confirm_password">
+    <br>
+    <label for="tipo_usuario">Escolha o tipo de usuário: </label>
+    <select name="tipo_usuario" id="tipo_usuario">
+      <option value="bolsista">Bolsista</option>
+      <option value="servidor">Servidor</option>
+    </select>
+    </label>
+    <br>
     <input type="submit" value="Cadastrar">
     <li><a href="{% url 'login' %}"> Efetue o login</a></li>
 
