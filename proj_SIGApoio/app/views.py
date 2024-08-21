@@ -12,6 +12,7 @@ from django.db.models import Q
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 import json
+from django.contrib import messages
 
 # @require_GET
 def home(request):
@@ -50,6 +51,7 @@ def cadastro_recurso(request):
             
         if form.is_valid():
             form.save()
+            messages.success(request, 'Recurso cadastrado com sucesso!')
             return HttpResponseRedirect(reverse('cadastro-recurso'))
         
     context = {'form': form}
@@ -69,6 +71,7 @@ def cadastro_tipo_recurso(request):
                    
         if form.is_valid():
             form.save()
+            messages.success(request, 'Tipo de recurso cadastrado com sucesso!')
             return redirect('cadastro-tipo-recurso')
             
     context = {'form':form}
@@ -438,3 +441,22 @@ def get_locais_dia(request):
     context = {'locais':locais_final}
     return render(request, 'reserva/local_option.html', context)
 
+def recurso_delete(request, id):
+    recurso = Recurso.objects.get(pk=id)
+    recurso.delete()
+    messages.success(request, 'Recurso excluído com sucesso!')
+    return redirect('listar-recurso')
+
+def recurso_edit(request, id):
+    recurso = Recurso.objects.get(pk=id)
+    if request.method == 'POST':
+        form = RecursoForm(request.POST, instance=recurso)
+        form.disable_fields_except_funcionando()
+        if form.is_valid():
+            Recurso.objects.filter(pk=id).update(funcionando=form.cleaned_data['funcionando'])
+            messages.success(request, 'Recurso editado com sucesso!')
+            return redirect('listar-recurso')
+    else:
+        form = RecursoForm(instance=recurso)
+        form.disable_fields_except_funcionando()
+    return render(request, 'recurso/editar_recurso.html', {'form': form})

@@ -42,11 +42,6 @@ class RecursoForm(forms.Form, forms.ModelForm):
         widget=forms.Select(attrs={'class':'form-control', 'style':color})
     )
 
-    status = forms.ChoiceField(
-        choices=Recurso.STATUS_CHOICE,
-        widget=forms.Select(attrs={'class':'form-control', 'style':color})
-    )
-
     funcionando = forms.ChoiceField(
         choices=Recurso.FUNCIONANDO_CHOICE,
         widget=forms.Select(attrs={'class':'form-control', 'style':color})
@@ -54,7 +49,16 @@ class RecursoForm(forms.Form, forms.ModelForm):
 
     class Meta:
         model = Recurso
-        fields = ['codigo','tipo', 'status', 'funcionando']  
+        fields = ['codigo','tipo', 'funcionando']  
+    
+    def disable_fields_except_funcionando(self):
+        self.fields['codigo'].disabled = True
+        self.fields['tipo'].disabled = True
+
+        self.fields['codigo'].required = False
+        self.fields['tipo'].required = False
+
+        self.fields['funcionando'].disabled = False
 
 class ChamadoForm(forms.Form, forms.ModelForm):
     chamado = forms.CharField(
@@ -175,9 +179,8 @@ class ReservaForm(forms.ModelForm, forms.Form):
             try:
                 self.fields['local'].queryset = \
                     Local.objects.all().order_by('nome')
-                print(self.fields['local'].queryset)
             except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty Horarios queryset
+                pass 
         elif self.instance.pk:
             self.fields['local'].queryset = Local.objects.none()
 
