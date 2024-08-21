@@ -256,7 +256,7 @@ def delete_reserva_semanal(request, id):
       
 # @require_http_methods(['DELETE'])    
 def delete_reserva_dia(request, id):
-    reserva = ReservaDiaUnico.objects.get(id)
+    reserva = ReservaDiaUnico.objects.get(pk=id)
     reserva.delete()
     return HttpResponseRedirect(reverse('listar-reservas'))
 

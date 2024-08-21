@@ -2,6 +2,18 @@ from app.models import Horario
 from django.db.models import Q
 from datetime import datetime, time
 
+def get_str_horarios(horarios):
+    horarios_obj = converter_horarios_back(horarios)
+    str_horarios = ''
+    for dia in horarios_obj['dias']:
+        str_horarios += dia
+    for horario in horarios_obj['horarios']:
+        if horario[0] not in str_horarios:
+            str_horarios += horario
+        else:
+            str_horarios += horario[1]
+    return str_horarios
+
 def converter_horarios(dias, horarios):
     '''Converte 2 vetores de strings, um de dias e outro de horarios, em apenas horarios com seus respectivos dias'''
     horarios_final = []

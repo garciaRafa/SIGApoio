@@ -2,6 +2,7 @@ from django import template
 from ..models import TipoRecurso, Recurso, Local, ReservaSemanal, ReservaDiaUnico, Usuario, Horario, TipoLocal, Chamado
 from django.utils.safestring import mark_safe
 from django.urls import reverse
+from ..bo.horarios import get_str_horarios
 
 register = template.Library()
 
@@ -19,27 +20,37 @@ def detalhar(reserva):
     if isinstance(reserva, ReservaDiaUnico):
         result = """
         <div>
-            <div>%s</div>
-            <div>%s</div>
-            <div>%s</div>
-            <div>%s</div>
-            <div>%s</div>
-            <div>%s</div>
+            <div>Descrição: %s</div>
+            <div>Início: %s</div>
+            <div>Final: %s</div>
+            <div>Local: %s</div>
+            <div>Responsável: %s</div>
+            <div>Solicitante: %s</div>
         </div> 
         """ %(reserva.descricao, reserva.diaHoraInicio, reserva.diaHoraFim, reserva.local, reserva.matResponsavel, reserva.matSolicitante)
 
     elif isinstance(reserva, ReservaSemanal):
-        chamados = Chamado.objects.filter(reserva=reserva)
+        chamados_vetor = Chamado.objects.filter(reserva=reserva)
+        horarios_vetor = reserva.horarios.values_list()
+        horarios = map(
+            lambda horario: horario[0],
+            horarios_vetor
+        )
+        str_horarios = get_str_horarios(horarios)
+        
+        # for chamado in chamados:
+        #     print(chamado)
+
         result = f"""
         <div>
-            <div>{reserva.descricao}</div>
-            <div>{reserva.horarios}</div>
-            <div>{reserva.local}</div>
-            <div>{reserva.matResponsavel}</div>
-            <div>{reserva.matSolicitante}</div>"""
-        for chamado in chamados:
-            result += f"<div>{chamado}</div>"
-        result += "</div>"
+            <div>Descrição: {reserva.descricao}</div>
+            <div>Local: {reserva.local}</div>
+            <div>Horário: {str_horarios}</div>
+            <div>Responsável: {reserva.matResponsavel}</div>
+            <div>Solicitante: {reserva.matSolicitante}</div>"""
+        # for chamado in chamados:
+        #     result += f"<div>{chamado}</div>"
+        # result += "</div>"
     
     return mark_safe(result)
 
