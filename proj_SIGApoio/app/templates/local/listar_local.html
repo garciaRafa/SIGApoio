@@ -60,12 +60,16 @@
                     <td>{{ local.tipo.tipo }}</td>
                     <td>
                         <!-- Botão para editar -->
-                        <button type="button" class="btn btn-primary" onclick="editarLocal('{{ local.pk }}', '{{ local.nome }}', '{{ local.bloco }}', '{{ local.capacidade }}', '{{ local.tipo.tipo }}')">Editar</button>
+                        <button type="button" class="btn btn-primary" onclick="editarLocal('{{ local.pk }}', '{{ local.nome }}', '{{ local.bloco }}', '{{ local.capacidade }}', '{{ local.tipo.tipo }}')">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
                         
                         <!-- Botão para remover -->
                         <form method="POST" action="{% url 'remover_local' local.pk %}" style="display:inline;">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja remover este local?');">Remover</button>
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja remover este local?');">
+                                <i class="bi bi-trash"></i>
+                            </button>
                         </form>
                     </td>
                 </tr>
