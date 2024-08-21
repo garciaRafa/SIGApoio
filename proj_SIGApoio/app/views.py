@@ -21,14 +21,26 @@ def home(request):
 # @require_POST
 @login_required(login_url='/usuarios/login/')
 def cad_local(request):
-    if request.method == 'POST':
+    if request.method != 'POST':
+        form = LocalForm()
+    else:
         form = LocalForm(request.POST)
+
+        # Verificar se o local já existe
+        nome_local = form.data.get('nome')  # Assumindo que 'nome' é o campo que identifica o local
+        if Local.objects.filter(nome=nome_local).exists():
+            context = {'erro': 'Esse local já existe!', 'form': form}
+            return render(request, 'local/cad_local.html', context)
+
+        # Se o formulário é válido, salvar o novo local
         if form.is_valid():
             form.save()
-            return redirect('success_page') 
-    else:
-        form = LocalForm()
-    return render(request, 'local/cad_local.html', {'form': form})
+            messages.success(request, 'Local foi cadastrado com sucesso!')
+            return HttpResponseRedirect(reverse('cad_local'))
+
+    context = {'form': form}
+    return render(request, 'local/cad_local.html', context)
+
 
 
 # @require_GET
