@@ -1,4 +1,4 @@
-from .views import efetuar_chamado, home, get_locais, cadastro_recurso, cad_local, listar_local, success_page, cadastro_tipo_recurso, listar_recursos, cadastro_reserva_semanal, tipo_reserva, cadastro_reserva_dia, delete_reserva_dia, delete_reserva_semanal, editar_reserva_semanal, editar_reserva_dia, reserva_recurso, listar_reservas, reserva_details, filtrar_reservas, filtros_reserva, get_locais_dia, listar_emprestimos
+from .views import efetuar_chamado, home, get_locais, cadastro_recurso, cad_local, listar_local, success_page, cadastro_tipo_recurso, listar_recursos, cadastro_reserva_semanal, tipo_reserva, cadastro_reserva_dia, delete_reserva_dia, delete_reserva_semanal, editar_reserva_semanal, editar_reserva_dia, reserva_recurso, listar_reservas, reserva_details, filtrar_reservas, filtros_reserva, get_locais_dia, listar_emprestimos, recurso_delete, recurso_edit
 from django.urls import path, include
 from django.contrib.auth.views import LogoutView 
 

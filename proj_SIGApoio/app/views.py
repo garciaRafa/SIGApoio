@@ -274,7 +274,8 @@ def editar_reserva_semanal(request, id):
         reserva.matSolicitante = Usuario.objects.get(matricula=req.get('matSolicitante'))
         reserva.save()
         
-        return HttpResponseRedirect(reverse('listar-reservas'))
+        messages.success(request, 'Reserva editada com sucesso!')
+        return redirect('listar-reservas')
     else:
         form = ReservaForm()
         horarios_dias = converter_horarios_back(map(lambda horario: horario['id'], reserva.horarios.values()));
@@ -296,7 +297,8 @@ def editar_reserva_dia(request, id):
         reserva.matSolicitante = Usuario.objects.get(matricula=request.POST.get('matSolicitante'))
         reserva.save()
         
-        return HttpResponseRedirect(reverse('listar-reserva'))
+        messages.success(request, 'Reserva editada com sucesso!')
+        return redirect('listar-reservas')
     else:
         form = ReservaDiaForm()
         reserva.diaHoraInicio = reserva.diaHoraInicio.strftime('%Y-%m-%dT%H:%M')
