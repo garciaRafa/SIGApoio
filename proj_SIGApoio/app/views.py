@@ -139,27 +139,6 @@ def listar_local(request):
 
     locais = locais.order_by(sort)
 
-    # Lógica para criar ou editar locais
-    if request.method == 'POST':
-        local_id = request.POST.get('local_id')
-        if local_id:
-            local = get_object_or_404(Local, id=local_id)
-            form = LocalForm(request.POST, instance=local)
-        else:
-            form = LocalForm(request.POST)
-
-        if form.is_valid():
-            local = form.save(commit=False)
-            if local_id:
-                # Verifica se o local pode ser editado
-                if ReservaSemanal.objects.filter(local=local).exists():
-                    return HttpResponseForbidden("Não é possível editar este local porque está sendo reservado.")
-            local.save()
-            return redirect('listar_local')
-
-    else:
-        form = LocalForm()
-
     context = {
         'locais': locais,
         'tipo': tipo,
@@ -167,9 +146,27 @@ def listar_local(request):
         'capacidade': capacidade,
         'tipos_locais': TipoLocal.objects.all(),
         'sort': sort,
-        'form': form
     }
     return render(request, 'local/listar_local.html', context)
+
+@login_required(login_url='/usuarios/login/')
+def editar_local(request, pk):
+    local = get_object_or_404(Local, pk=pk)
+    if request.method == 'POST':
+        form = LocalForm(request.POST, instance=local)
+        if form.is_valid():
+            if ReservaSemanal.objects.filter(local=local).exists() and not form.has_changed():
+                return HttpResponseForbidden("Não é possível editar este local porque está sendo reservado.")
+            form.save()
+            return redirect('listar_local')
+    else:
+        form = LocalForm(instance=local)
+
+    context = {
+        'form': form,
+        'local': local,
+    }
+    return render(request, 'local/editar_local.html', context)
 
 @login_required(login_url='/usuarios/login/')
 def remover_local(request, pk):
