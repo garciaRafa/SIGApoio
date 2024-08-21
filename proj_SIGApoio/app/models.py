@@ -75,6 +75,7 @@ class Local(models.Model):
     bloco = models.CharField(max_length=10)
     capacidade = models.IntegerField()
     tipo = models.ForeignKey(TipoLocal, on_delete=models.DO_NOTHING)
+    reservado = models.BooleanField(default=False)
     
     def __str__(self):
         return self.nome

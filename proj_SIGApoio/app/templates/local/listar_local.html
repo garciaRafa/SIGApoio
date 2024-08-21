@@ -49,18 +49,21 @@
                 <td>{{ local.capacidade }}</td>
                 <td>{{ local.tipo.tipo }}</td>
                 <td>
-                    <!-- Botão para editar -->
-                    <a href="{% url 'editar_local' local.pk %}" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
-                    
-                    <!-- Botão para remover -->
-                    <form method="POST" action="{% url 'remover_local' local.pk %}" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja remover este local?');"><i class="bi bi-trash"></i></button>
-                    </form>
+                    {% if local.reservado %}
+                        <button class="btn btn-secondary" disabled><i class="bi bi-calendar"></i> Reservado</button>
+                    {% else %}
+                        <!-- Botão para editar -->
+                        <a href="{% url 'editar_local' local.pk %}" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                        
+                        <!-- Botão para remover -->
+                        <form method="POST" action="{% url 'remover_local' local.pk %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja remover este local?');"><i class="bi bi-trash"></i></button>
+                        </form>
+                    {% endif %}
                 </td>
             </tr>
-            {% endfor %}
-        </tbody>
+            {% endfor %}        
     </table>
 </div>
 
