@@ -27,6 +27,20 @@
             <button type="submit" class="btn btn-primary">Filtrar</button>
         </form>
 
+        <hr>
+
+        <!-- Formulário de criação/edição -->
+        <h2>{% if form.instance.pk %}Editar Local{% else %}Adicionar Novo Local{% endif %}</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success">Salvar</button>
+        </form>
+
+        <hr>
+
+        <!-- Tabela de locais -->
+        <h2>Lista de Locais</h2>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -34,6 +48,7 @@
                     <th><a href="?{% if tipo %}tipo={{ tipo }}&{% endif %}{% if bloco %}bloco={{ bloco }}&{% endif %}{% if capacidade %}capacidade={{ capacidade }}&{% endif %}sort=bloco">Bloco</a></th>
                     <th><a href="?{% if tipo %}tipo={{ tipo }}&{% endif %}{% if bloco %}bloco={{ bloco }}&{% endif %}{% if capacidade %}capacidade={{ capacidade }}&{% endif %}sort=capacidade">Capacidade</a></th>
                     <th><a href="?{% if tipo %}tipo={{ tipo }}&{% endif %}{% if bloco %}bloco={{ bloco }}&{% endif %}{% if capacidade %}capacidade={{ capacidade }}&{% endif %}sort=tipo">Tipo</a></th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -43,10 +58,31 @@
                     <td>{{ local.bloco }}</td>
                     <td>{{ local.capacidade }}</td>
                     <td>{{ local.tipo.tipo }}</td>
+                    <td>
+                        <!-- Botão para editar -->
+                        <button type="button" class="btn btn-primary" onclick="editarLocal('{{ local.pk }}', '{{ local.nome }}', '{{ local.bloco }}', '{{ local.capacidade }}', '{{ local.tipo.tipo }}')">Editar</button>
+                        
+                        <!-- Botão para remover -->
+                        <form method="POST" action="{% url 'remover_local' local.pk %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja remover este local?');">Remover</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+
+    <script>
+        function editarLocal(id, nome, bloco, capacidade, tipo) {
+            // Preencher o formulário com os dados do local
+            document.querySelector('[name="local_id"]').value = id;
+            document.querySelector('[name="nome"]').value = nome;
+            document.querySelector('[name="bloco"]').value = bloco;
+            document.querySelector('[name="capacidade"]').value = capacidade;
+            document.querySelector('[name="tipo"]').value = tipo;
+        }
+    </script>
 
 {% endblock content %}

@@ -1,6 +1,6 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.decorators.http import require_POST, require_GET, require_safe, require_http_methods
 from .forms import LocalForm, RecursoForm, TipoRecursoForm, ReservaForm, ChamadoForm, ReservaDiaForm
@@ -139,15 +139,48 @@ def listar_local(request):
 
     locais = locais.order_by(sort)
 
+    # Lógica para criar ou editar locais
+    if request.method == 'POST':
+        local_id = request.POST.get('local_id')
+        if local_id:
+            local = get_object_or_404(Local, id=local_id)
+            form = LocalForm(request.POST, instance=local)
+        else:
+            form = LocalForm(request.POST)
+
+        if form.is_valid():
+            local = form.save(commit=False)
+            if local_id:
+                # Verifica se o local pode ser editado
+                if ReservaSemanal.objects.filter(local=local).exists():
+                    return HttpResponseForbidden("Não é possível editar este local porque está sendo reservado.")
+            local.save()
+            return redirect('listar_local')
+
+    else:
+        form = LocalForm()
+
     context = {
         'locais': locais,
         'tipo': tipo,
         'bloco': bloco,
         'capacidade': capacidade,
         'tipos_locais': TipoLocal.objects.all(),
-        'sort': sort
+        'sort': sort,
+        'form': form
     }
     return render(request, 'local/listar_local.html', context)
+
+@login_required(login_url='/usuarios/login/')
+def remover_local(request, pk):
+    local = get_object_or_404(Local, pk=pk)
+
+    # Verifica se o local pode ser removido
+    if ReservaSemanal.objects.filter(local=local).exists():
+        return HttpResponseForbidden("Não é possível remover este local porque está sendo reservado.")
+
+    local.delete()
+    return redirect('listar_local')
 
 # @require_GET
 @login_required(login_url='/usuarios/login/')

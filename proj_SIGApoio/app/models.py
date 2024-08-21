@@ -55,10 +55,20 @@ class Horario(models.Model):
     horaFim = models.TimeField(null=True, blank=True)
     
 class TipoLocal(models.Model):
-    tipo = models.CharField(max_length=50, unique=True, primary_key=True)
-    
+    SALA = 'SALA'
+    LABORATORIO = 'LAB'
+    AUDITORIO = 'AUD'
+    TIPOS = [
+        (SALA, 'Sala'),
+        (LABORATORIO, 'Laboratório'),
+        (AUDITORIO, 'Auditório'),
+    ]
+
+    tipo = models.CharField(max_length=50, choices=TIPOS, unique=True, primary_key=True)
+
     def __str__(self):
-        return self.tipo
+        return self.get_tipo_display()
+
 
 class Local(models.Model):   
     nome = models.CharField(max_length=50, unique=True)

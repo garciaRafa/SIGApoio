@@ -1,4 +1,4 @@
-from .views import efetuar_chamado, home, get_locais, cadastro_recurso, cad_local, listar_local, success_page, cadastro_tipo_recurso, listar_recursos, cadastro_reserva_semanal, tipo_reserva, cadastro_reserva_dia, reserva_recurso, listar_reservas, reserva_details, filtrar_reservas, filtros_reserva, get_locais_dia, listar_emprestimos, recurso_delete, recurso_edit
+from .views import efetuar_chamado, home, get_locais, cadastro_recurso, cad_local, listar_local, remover_local, success_page, cadastro_tipo_recurso, listar_recursos, cadastro_reserva_semanal, tipo_reserva, cadastro_reserva_dia, reserva_recurso, listar_reservas, reserva_details, filtrar_reservas, filtros_reserva, get_locais_dia, listar_emprestimos, recurso_delete, recurso_edit
 from django.urls import path, include
 from django.contrib.auth.views import LogoutView 
 
@@ -18,6 +18,7 @@ urlpatterns = [
     path('reserva_recurso/', reserva_recurso, name='reserva_recurso'),
     path('emprestimos/', listar_emprestimos, name='listar_emprestimos'),
     path('local/listar/', listar_local, name='listar_local'),
+    path('local/remover/<int:pk>/', remover_local, name='remover_local'),
     path('local/cad_local', cad_local, name = "cad_local"),
     path('reserva/cadastro/semanal', cadastro_reserva_semanal, name = "cad_reserva_semanal"),
     path('reserva/cadastro/dia', cadastro_reserva_dia, name = "cad_reserva_dia"),
