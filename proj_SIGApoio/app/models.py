@@ -71,7 +71,7 @@ class TipoLocal(models.Model):
 
 
 class Local(models.Model):   
-    nome = models.CharField(max_length=50, unique=True)
+    nome = models.CharField(max_length=50)
     bloco = models.CharField(max_length=10)
     capacidade = models.IntegerField()
     tipo = models.ForeignKey(TipoLocal, on_delete=models.DO_NOTHING)
