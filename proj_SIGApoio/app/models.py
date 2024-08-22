@@ -35,7 +35,7 @@ class User(AbstractBaseUser):
     
     
     def __str__(self):
-        return self.tipo.tipo
+        return self.nome
 
 class TipoRecurso(models.Model):
     tipo = models.CharField(max_length=100)

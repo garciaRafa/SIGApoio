@@ -17,9 +17,11 @@ def get_usuario_choices():
         if 'app_usuario' in connection.introspection.table_names():
             return [(usuario.matricula, usuario.nome) for usuario in Usuario.objects.all()]
         else:
+            print(f'Sem usuários cadastrados.')
             return []
         
-    except Exception:
+    except Exception as e:
+        print(f'Erro: {e.message} (app/forms.py 20)')
         return []
     
 class TipoRecursoForm(forms.Form, forms.ModelForm):
