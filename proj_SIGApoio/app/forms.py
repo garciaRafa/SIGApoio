@@ -1,6 +1,7 @@
 from django import forms
 from django.db import connection
-from .models import Recurso, TipoRecurso, Local, TipoLocal, Usuario, ReservaSemanal, ReservaDiaUnico, Chamado
+from .models import User, Recurso, TipoRecurso, Local, TipoLocal, Usuario, ReservaSemanal, ReservaDiaUnico, Chamado
+
 
 color = 'color: black'
 class_style_1 = 'form-select gray-back blue-text me-4'
@@ -8,14 +9,19 @@ class_style_2 = 'form-control blue-text gray-back me-4'
 
 BLOCOS_CHOICES = [('A', 'Bloco A'), ('B', 'Bloco B'), ('C', 'Bloco C'), ('D', 'Bloco D'), ('Aud', 'Auditórios'), ('Lab', 'Laboratórios')]
 
+
+
+
 def get_usuario_choices():
     try:
         if 'app_usuario' in connection.introspection.table_names():
             return [(usuario.matricula, usuario.nome) for usuario in Usuario.objects.all()]
         else:
+            print(f'Sem usuários cadastrados.')
             return []
         
-    except Exception:
+    except Exception as e:
+        print(f'Erro: {e.message} (app/forms.py 20)')
         return []
     
 class TipoRecursoForm(forms.Form, forms.ModelForm):

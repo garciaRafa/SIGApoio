@@ -1,5 +1,8 @@
 from django.db import models
 from datetime import date
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import User, PermissionsMixin
+from django.utils.translation import gettext_lazy as _
 class TipoUsuario(models.Model):
     tipo = models.CharField(max_length=50, unique=True, primary_key=True)
     
@@ -13,8 +16,26 @@ class Usuario(models.Model):
     nome = models.CharField(max_length=200)
     tipo = models.OneToOneField(TipoUsuario, on_delete=models.CASCADE)
     
+class User(AbstractBaseUser):
+    email = models.EmailField(_('email address'), unique=True)
+    first_name = models.CharField(_('first name'), max_length=150, blank=True)
+    last_name = models.CharField(_('last name'), max_length=150, blank=True)
+    is_active = models.BooleanField(_('active'), default=True)
+    is_admin = models.BooleanField(
+        _('admin status'),
+        default=False,
+        help_text=_(
+            'Designates whether the user can log into this admin site.'),
+    )
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    
+    
+    
+    
     def __str__(self):
-        return self.tipo.tipo
+        return self.nome
 
 class TipoRecurso(models.Model):
     tipo = models.CharField(max_length=100)
